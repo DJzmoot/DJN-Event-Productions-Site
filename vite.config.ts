@@ -55,7 +55,7 @@ export default defineConfig({
 
   build: {
     target: 'esnext',
-    outDir: 'build', // keep this if you want, BUT your workflow must deploy "build"
+    //outDir: 'build', // keep this if you want, BUT your workflow must deploy "build"
   },
 
   server: {
