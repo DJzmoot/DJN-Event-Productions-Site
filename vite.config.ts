@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
 
   // ✅ Critical for GitHub Pages project sites:
-  base: '/DJN-Event-Productions-Site/',
+  base: '/',
 
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
