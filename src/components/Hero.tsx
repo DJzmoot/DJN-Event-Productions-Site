@@ -67,16 +67,19 @@ export function Hero() {
         >
           <div className="inline-flex items-center space-x-2 px-4 py-2 bg-card/50 backdrop-blur-sm rounded-full border border-border">
             <Sparkles className="w-4 h-4 text-purple-500" />
-            <span className="text-sm text-muted-foreground">Founded 2008 • Lighting • Audio • DJ • Pixel Shows</span>
+            <span className="text-sm text-muted-foreground">
+              Founded 2008 • Lighting • Audio • Visuals • Installations • Pixel Shows
+            </span>
           </div>
 
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl max-w-5xl mx-auto">
-            Concert-grade production for{' '}
-            <span className="gradient-text">unforgettable events</span>
+            We don’t rent gear — we{' '}
+            <span className="gradient-text">engineer systems</span>
           </h1>
 
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Custom lighting, audio, DJ, and pixel installations for events, venues, and large-scale displays.
+            Professional lighting, audio, and visual engineering for concerts, theatrical productions, conferences,
+            and permanent installations across Long Island &amp; NYC since 2008.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -88,7 +91,7 @@ export function Hero() {
                 if (element) element.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              Request a Quote
+              Request a Production Quote
             </Button>
             <Button
               size="lg"
@@ -99,7 +102,7 @@ export function Hero() {
                 if (element) element.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              View Portfolio
+              See Our Work
             </Button>
           </div>
 
@@ -120,7 +123,7 @@ export function Hero() {
             </div>
             <div className="flex items-center space-x-2 text-muted-foreground">
               <Sparkles className="w-5 h-5 text-magenta-500" />
-              <span>Full Production Services</span>
+              <span>Live + Theatrical + Installations</span>
             </div>
           </motion.div>
         </motion.div>
