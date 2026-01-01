@@ -1,29 +1,55 @@
 import { motion } from 'motion/react';
-import { Lightbulb, Volume2, Music, Zap } from 'lucide-react';
+import {
+  Lightbulb,
+  Volume2,
+  Theater,
+  Speaker,
+  Wrench,
+  Sparkles,
+  Music,
+} from 'lucide-react';
 
 const services = [
   {
     icon: Lightbulb,
-    title: 'Lighting Design',
-    description: 'Intelligent fixtures, uplighting, and complete stage lighting systems tailored to your venue and vision.',
+    title: 'Live Lighting Design (Concerts / Events / Conferences)',
+    description:
+      'Show design, programming, and live busking for concerts, corporate events, and large productions—built for reliability under pressure.',
     gradient: 'from-purple-500 to-indigo-500',
   },
   {
-    icon: Volume2,
-    title: 'Audio Engineering',
-    description: 'Professional PA systems, live sound mixing, and acoustic solutions for crystal-clear audio experiences.',
+    icon: Theater,
+    title: 'Theatrical Lighting Design',
+    description:
+      'Cue-based lighting design for theatre, schools, and performance venues—from plot and paperwork through programming and tech.',
     gradient: 'from-indigo-500 to-blue-500',
   },
   {
-    icon: Music,
-    title: 'DJ Services',
-    description: 'Professional DJ & MC with integrated lighting control, curated playlists, and seamless event flow.',
+    icon: Volume2,
+    title: 'Live Audio Engineering (Concerts / Events / Conferences)',
+    description:
+      'FOH engineering, system tuning, and RF coordination for clear, consistent sound in any room—from intimate venues to outdoor stages.',
     gradient: 'from-blue-500 to-cyan-500',
   },
   {
-    icon: Zap,
-    title: 'Pixel Lighting & xLights',
-    description: 'Custom pixel installations, sequencing, and xLights-programmed shows for stunning visual displays.',
+    icon: Speaker,
+    title: 'Theatrical Audio Design',
+    description:
+      'Mic planning, cue-based mixing, and playback systems designed for intelligibility-first theatrical productions and auditoriums.',
+    gradient: 'from-cyan-500 to-emerald-500',
+  },
+  {
+    icon: Wrench,
+    title: 'AV Systems Design & Installation (Temporary + Permanent)',
+    description:
+      'Specification, installation, and commissioning of lighting/audio/visual systems for temporary productions and permanent installs—engineered signal flow, power, and control.',
+    gradient: 'from-emerald-500 to-teal-500',
+  },
+  {
+    icon: Sparkles,
+    title: 'xLights / Pixel Holiday Displays (Residential + Commercial)',
+    description:
+      'Custom pixel installations and xLights choreography—from high-impact residential shows to commercial properties and municipal-scale displays.',
     gradient: 'from-fuchsia-500 to-pink-500',
   },
 ];
@@ -43,7 +69,8 @@ export function Services() {
             <span className="gradient-text">Services</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Comprehensive production services engineered for performance and reliability
+            Production engineering for live events, theatrical shows, and permanent installations—designed for reliability,
+            clarity, and clean aesthetics.
           </p>
         </motion.div>
 
@@ -55,7 +82,7 @@ export function Services() {
                 key={service.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 0.6, delay: index * 0.08 }}
                 viewport={{ once: true }}
                 whileHover={{ y: -8 }}
                 className="group"
@@ -65,14 +92,29 @@ export function Services() {
                     <Icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-2xl mb-4">{service.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {service.description}
-                  </p>
+                  <p className="text-muted-foreground leading-relaxed">{service.description}</p>
                 </div>
               </motion.div>
             );
           })}
         </div>
+
+        {/* Select / subcontracted offering (kept intentionally subtle) */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="mt-10 text-center"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 backdrop-blur-sm px-4 py-2 text-sm text-muted-foreground">
+            <Music className="w-4 h-4 text-purple-500" />
+            <span>
+              DJ services are offered on a limited basis and/or through trusted subcontractors when clients need a fully
+              integrated lighting + audio experience.
+            </span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
