@@ -65,13 +65,7 @@ export function Hero() {
           transition={{ duration: 0.8 }}
           className="space-y-8"
         >
-          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-card/50 backdrop-blur-sm rounded-full border border-border">
-            <Sparkles className="w-4 h-4 text-purple-500" />
-            <span className="text-sm text-muted-foreground">
-              Founded 2008 • Lighting • Audio • Visuals • Installations • Pixel Shows
-            </span>
-          </div>
-
+          
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl max-w-5xl mx-auto">
             We don’t rent gear — we{' '}
             <span className="gradient-text">engineer systems</span>
