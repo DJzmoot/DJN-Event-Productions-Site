@@ -6,7 +6,6 @@ import {
   Speaker,
   Wrench,
   Sparkles,
-  Music,
 } from 'lucide-react';
 
 const services = [
@@ -14,21 +13,21 @@ const services = [
     icon: Lightbulb,
     title: 'Live Lighting Design (Concerts / Events / Conferences)',
     description:
-      'Show design, programming, and live busking for concerts, corporate events, and large productions—built for reliability under pressure.',
+      'Show design, programming, and live busking for concerts, corporate events, and large productions.',
     gradient: 'from-purple-500 to-indigo-500',
   },
   {
     icon: Theater,
     title: 'Theatrical Lighting Design',
     description:
-      'Cue-based lighting design for theatre, schools, and performance venues—from plot and paperwork through programming and tech.',
+      'Cue-based lighting design for theatre, schools, and performance venues — from plot and paperwork through programming and tech.',
     gradient: 'from-indigo-500 to-blue-500',
   },
   {
     icon: Volume2,
     title: 'Live Audio Engineering (Concerts / Events / Conferences)',
     description:
-      'FOH engineering, system tuning, and RF coordination for clear, consistent sound in any room—from intimate venues to outdoor stages.',
+      'FOH engineering, system tuning, and RF coordination for clear, consistent sound in any room — from intimate venues to outdoor stages.',
     gradient: 'from-blue-500 to-cyan-500',
   },
   {
@@ -40,9 +39,9 @@ const services = [
   },
   {
     icon: Wrench,
-    title: 'AV Systems Design & Installation (Temporary + Permanent)',
+    title: 'AV Systems Design & Installation',
     description:
-      'Specification, installation, and commissioning of lighting/audio/visual systems for temporary productions and permanent installs—engineered signal flow, power, and control.',
+      'Specification, installation, and commissioning of lighting, audio, and video systems — engineered signal flow, power, and control.',
     gradient: 'from-emerald-500 to-teal-500',
   },
   {
@@ -77,6 +76,7 @@ export function Services() {
         <div className="grid md:grid-cols-2 gap-8">
           {services.map((service, index) => {
             const Icon = service.icon;
+
             return (
               <motion.div
                 key={service.title}
@@ -91,6 +91,7 @@ export function Services() {
                   <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${service.gradient} mb-6`}>
                     <Icon className="w-8 h-8 text-white" />
                   </div>
+
                   <h3 className="text-2xl mb-4">{service.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">{service.description}</p>
                 </div>
@@ -98,23 +99,6 @@ export function Services() {
             );
           })}
         </div>
-
-        {/* Select / subcontracted offering (kept intentionally subtle) */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="mt-10 text-center"
-        >
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 backdrop-blur-sm px-4 py-2 text-sm text-muted-foreground">
-            <Music className="w-4 h-4 text-purple-500" />
-            <span>
-              DJ services are offered on a limited basis and/or through trusted subcontractors when clients need a fully
-              integrated lighting + audio experience.
-            </span>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
