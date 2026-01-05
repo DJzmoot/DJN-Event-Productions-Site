@@ -24,7 +24,7 @@ const portfolioItems: PortfolioItem[] = [
     category: 'Pixel Shows',
     services: ['Pixel Lighting', 'xLights Programming', 'Installation'],
     featured: true,
-    isVideo: true,
+    isVideo: false,
   },
   {
     id: '2',
@@ -68,14 +68,14 @@ const portfolioItems: PortfolioItem[] = [
   },
   {
     id: '6',
-    title: 'Outdoor Festival Setup',
+    title: 'Riverhead - Merry Market',
     description:
       'Large-scale outdoor event production featuring weather-resistant lighting, distributed PA system, and multi-zone audio control.',
     image:
-      'https://images.unsplash.com/photo-1766933161362-ccf4050529a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvdXRkb29yJTIwZXZlbnQlMjBsaWdodGluZ3xlbnwxfHx8fDE3NjcyMDk1NTR8MA&ixlib=rb-4.1.0&q=80&w=1080',
+      '/RiverheadMerryMarket1.gif',
     category: 'Audio',
     services: ['Audio Engineering', 'Lighting Design', 'Installation'],
-    isVideo: true,
+    isVideo: false,
   },
 ];
 
