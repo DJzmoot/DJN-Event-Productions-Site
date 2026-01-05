@@ -35,14 +35,14 @@ const services = [
     title: 'Theatrical Audio Design',
     description:
       'Mic planning, cue-based mixing, and playback systems designed for intelligibility-first theatrical productions and auditoriums.',
-    gradient: 'from-cyan-500 to-emerald-500',
+    gradient: 'from-blue-500 to-cyan-500',
   },
   {
     icon: Wrench,
     title: 'AV Systems Design & Installation',
     description:
       'Specification, installation, and commissioning of lighting, audio, and video systems — engineered signal flow, power, and control.',
-    gradient: 'from-emerald-500 to-teal-500',
+    gradient: 'from-indigo-500 to-blue-500',
   },
   {
     icon: Sparkles,
