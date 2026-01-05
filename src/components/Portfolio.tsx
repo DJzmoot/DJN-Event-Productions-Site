@@ -17,9 +17,10 @@ interface PortfolioItem {
 const portfolioItems: PortfolioItem[] = [
   {
     id: '1',
-    title: 'Municipal Holiday Light Show',
-    description: 'Large-scale xLights-programmed pixel installation featuring 15,000+ addressable LEDs synchronized to holiday music. Custom sequencing and weather-resistant installation for outdoor municipal display.',
-    image: 'https://images.unsplash.com/photo-1739184523594-564cb9b61126?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxMRUQlMjBwaXhlbCUyMGxpZ2h0c3xlbnwxfHx8fDE3NjcyMDk1NTN8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    title: 'Residential Light Show Installation - Lights on Marquette',
+    description:
+      '10,000+ pixel residential holiday light show installation choreographed in xLights and synchronized to music. Custom sequencing, controller layout, power distribution, and weather-ready outdoor installation.',
+    image: '/LightsonMarquetteChristmas1.jpg',
     category: 'Pixel Shows',
     services: ['Pixel Lighting', 'xLights Programming', 'Installation'],
     featured: true,
@@ -28,40 +29,50 @@ const portfolioItems: PortfolioItem[] = [
   {
     id: '2',
     title: 'Corporate Gala Production',
-    description: 'Full production services for 500-person corporate event including intelligent lighting, professional audio mixing, and DJ services with integrated light control.',
-    image: 'https://images.unsplash.com/photo-1709731191876-899e32264420?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb25jZXJ0JTIwc3RhZ2UlMjBsaWdodHN8ZW58MXx8fHwxNzY3MTI0MTM3fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    description:
+      'Full production services for 500-person corporate event including intelligent lighting, professional audio mixing, and DJ services with integrated light control.',
+    image:
+      'https://images.unsplash.com/photo-1709731191876-899e32264420?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb25jZXJ0JTIwc3RhZ2UlMjBsaWdodHN8ZW58MXx8fHwxNzY3MTI0MTM3fDA&ixlib=rb-4.1.0&q=80&w=1080',
     category: 'Lighting',
     services: ['Lighting Design', 'Audio Engineering', 'DJ Services'],
   },
   {
     id: '3',
     title: 'Live Sound Engineering',
-    description: 'Multi-stage festival audio production with comprehensive PA systems, monitor mixing, and live sound engineering for outdoor venue.',
-    image: 'https://images.unsplash.com/photo-1629124985795-896afbb07d7b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBhdWRpbyUyMG1peGVyfGVufDF8fHx8MTc2NzIwOTU1M3ww&ixlib=rb-4.1.0&q=80&w=1080',
+    description:
+      'Multi-stage festival audio production with comprehensive PA systems, monitor mixing, and live sound engineering for outdoor venue.',
+    image:
+      'https://images.unsplash.com/photo-1629124985795-896afbb07d7b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBhdWRpbyUyMG1peGVyfGVufDF8fHx8MTc2NzIwOTU1M3ww&ixlib=rb-4.1.0&q=80&w=1080',
     category: 'Audio',
     services: ['Audio Engineering', 'PA Systems', 'Live Mixing'],
   },
   {
     id: '4',
     title: 'School Performance Lighting',
-    description: 'Theatre lighting design and installation for high school auditorium, featuring moving heads, LED pars, and DMX control system.',
-    image: 'https://images.unsplash.com/photo-1723902701334-08b0fe53ff4c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdGFnZSUyMGxpZ2h0aW5nJTIwY29uY2VydHxlbnwxfHx8fDE3NjcxNzMzMzF8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    description:
+      'Theatre lighting design and installation for high school auditorium, featuring moving heads, LED pars, and DMX control system.',
+    image:
+      'https://images.unsplash.com/photo-1723902701334-08b0fe53ff4c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdGFnZSUyMGxpZ2h0aW5nJTIwY29uY2VydHxlbnwxfHx8fDE3NjcxNzMzMzF8MA&ixlib=rb-4.1.0&q=80&w=1080',
     category: 'Lighting',
     services: ['Lighting Design', 'Installation', 'DMX Programming'],
   },
   {
     id: '5',
     title: 'Wedding Reception',
-    description: 'Complete DJ and lighting package with custom uplighting, intelligent fixtures, and professional sound system for 200-guest wedding reception.',
-    image: 'https://images.unsplash.com/photo-1642178225043-f299072af862?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxESiUyMGVxdWlwbWVudCUyMG5pZ2h0Y2x1YnxlbnwxfHx8fDE3NjcyMDk1NTN8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    description:
+      'Complete DJ and lighting package with custom uplighting, intelligent fixtures, and professional sound system for 200-guest wedding reception.',
+    image:
+      'https://images.unsplash.com/photo-1642178225043-f299072af862?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxESiUyMGVxdWlwbWVudCUyMG5pZ2h0Y2x1YnxlbnwxfHx8fDE3NjcyMDk1NTN8MA&ixlib=rb-4.1.0&q=80&w=1080',
     category: 'DJ',
     services: ['DJ Services', 'Lighting Design', 'Audio Engineering'],
   },
   {
     id: '6',
     title: 'Outdoor Festival Setup',
-    description: 'Large-scale outdoor event production featuring weather-resistant lighting, distributed PA system, and multi-zone audio control.',
-    image: 'https://images.unsplash.com/photo-1766933161362-ccf4050529a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvdXRkb29yJTIwZXZlbnQlMjBsaWdodGluZ3xlbnwxfHx8fDE3NjcyMDk1NTR8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    description:
+      'Large-scale outdoor event production featuring weather-resistant lighting, distributed PA system, and multi-zone audio control.',
+    image:
+      'https://images.unsplash.com/photo-1766933161362-ccf4050529a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvdXRkb29yJTIwZXZlbnQlMjBsaWdodGluZ3xlbnwxfHx8fDE3NjcyMDk1NTR8MA&ixlib=rb-4.1.0&q=80&w=1080',
     category: 'Audio',
     services: ['Audio Engineering', 'Lighting Design', 'Installation'],
     isVideo: true,
@@ -74,12 +85,13 @@ export function Portfolio() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
 
-  const filteredItems = selectedCategory === 'All'
-    ? portfolioItems
-    : portfolioItems.filter(item => item.category === selectedCategory);
+  const filteredItems =
+    selectedCategory === 'All'
+      ? portfolioItems
+      : portfolioItems.filter((item) => item.category === selectedCategory);
 
-  const featuredItem = portfolioItems.find(item => item.featured);
-  const regularItems = filteredItems.filter(item => !item.featured);
+  const featuredItem = portfolioItems.find((item) => item.featured);
+  const regularItems = filteredItems.filter((item) => !item.featured);
 
   return (
     <section id="portfolio" className="py-24 px-4 sm:px-6 lg:px-8 bg-background">
@@ -98,7 +110,6 @@ export function Portfolio() {
             Featured work across lighting, audio, DJ services, and pixel installations
           </p>
 
-          {/* Filter Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-3">
             {categories.map((category) => (
               <button
@@ -116,7 +127,6 @@ export function Portfolio() {
           </div>
         </motion.div>
 
-        {/* Featured Project */}
         {selectedCategory === 'All' && featuredItem && (
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -157,10 +167,7 @@ export function Portfolio() {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {featuredItem.services.map((service) => (
-                      <span
-                        key={service}
-                        className="px-3 py-1 bg-secondary rounded-lg text-sm"
-                      >
+                      <span key={service} className="px-3 py-1 bg-secondary rounded-lg text-sm">
                         {service}
                       </span>
                     ))}
@@ -171,7 +178,6 @@ export function Portfolio() {
           </motion.div>
         )}
 
-        {/* Grid of Portfolio Items */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {regularItems.map((item, index) => (
             <motion.div
