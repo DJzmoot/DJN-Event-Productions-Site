@@ -79,7 +79,7 @@ const portfolioItems: PortfolioItem[] = [
   },
 ];
 
-const categories = ['All', 'Lighting', 'Audio', 'DJ', 'Pixel Shows'];
+const categories = ['All', 'Lighting', 'Audio', 'DJ', 'Pixel Light Shows'];
 
 export function Portfolio() {
   const [selectedCategory, setSelectedCategory] = useState('All');
