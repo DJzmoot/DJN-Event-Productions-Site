@@ -21,8 +21,8 @@ const portfolioItems: PortfolioItem[] = [
     description:
       '10,000+ pixel residential holiday light show installation choreographed in xLights and synchronized to music. Custom sequencing, controller layout, power distribution, and weather-ready outdoor installation.',
     image: '/LightsonMarquetteChristmas1.jpg',
-    category: 'Pixel Shows',
-    services: ['Pixel Lighting', 'xLights Programming', 'Installation'],
+    category: 'Pixel Light Shows',
+    services: ['Pixel Light Shows', 'xLights Programming', 'Installation'],
     featured: true,
     isVideo: false,
   },
