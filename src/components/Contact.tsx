@@ -108,8 +108,8 @@ export function Contact() {
                   </div>
                   <div>
                     <h4 className="mb-1">Phone</h4>
-                    <a href="tel:+15551234567" className="text-muted-foreground hover:text-purple-500 transition-colors">
-                      (555) 123-4567
+                    <a href="tel:+5165780551" className="text-muted-foreground hover:text-purple-500 transition-colors">
+                      (516) 578-0551
                     </a>
                   </div>
                 </div>
