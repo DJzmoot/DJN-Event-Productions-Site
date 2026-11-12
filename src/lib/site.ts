@@ -1,12 +1,11 @@
-// Site-wide constants. Contact details below are the ones already published
-// on the previous djneventproductions.com site.
+// Site-wide constants (contact details, navigation, expertise).
 export const SITE = {
   name: 'DJN Event Productions',
   owner: 'Nick Manganiello',
   url: 'https://djneventproductions.com',
   description:
     'Nick Manganiello — independent lighting designer, technical director, show programmer and live event operator serving production companies, agencies and venues throughout the Northeastern United States.',
-  email: 'info@djneventproductions.com',
+  email: 'djntertainmentevents@gmail.com',
   phone: '(516) 578-0551',
   phoneHref: 'tel:+15165780551',
   locality: 'Smithtown',
@@ -35,14 +34,3 @@ export const EXPERTISE = [
   { icon: 'dj', label: 'DJ Services' },
 ] as const;
 
-export const PROJECT_TYPES = [
-  'Lighting design & programming',
-  'Technical direction',
-  'Show operation',
-  'Video & projection',
-  'Audio systems',
-  'Holiday lighting / animated light show',
-  'Architectural lighting',
-  'DJ services',
-  'Something else',
-] as const;

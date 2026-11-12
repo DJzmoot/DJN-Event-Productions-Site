@@ -19,7 +19,7 @@
     "@tailwindcss/vite": "^4.3.5",
     "astro": "7.3.3",
     "embla-carousel": "^8.6.0",
-    "embla-carousel-autoplay": "^8.6.0",
+    "embla-carousel-auto-scroll": "^8.6.0",
     "tailwindcss": "^4.3.5"
   },
   "devDependencies": {

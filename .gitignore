@@ -9,13 +9,12 @@ node_modules/
 # see scripts/prepare-photos.mjs)
 static/
 
-# environment
-.env
-.env.*
-!.env.example
 
 # logs / OS
 npm-debug.log*
 .DS_Store
 Thumbs.db
 .playwright-mcp/
+# environment
+.env
+.env.*

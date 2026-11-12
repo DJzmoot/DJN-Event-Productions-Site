@@ -35,7 +35,7 @@ src/
   components/home/        homepage sections (Hero, WorkCarousel, Expertise, …)
   components/             Header, Footer, ProjectCard, Icon, Wordmark
   layouts/Base.astro      <head>, SEO / Open Graph / JSON-LD, header & footer
-  lib/site.ts             contact details, nav, expertise list, form options
+  lib/site.ts             contact details, nav, expertise list
   lib/categories.ts       portfolio categories / filters
   pages/                  /, /work/, /work/[slug]/, 404
 scripts/prepare-photos.mjs   originals → web masters
@@ -62,27 +62,11 @@ static/                   full-resolution originals (git-ignored, never publishe
      for video and motion.
 4. `npm run build` validates the front matter against the schema.
 
-## Contact form
+## Contact
 
-GitHub Pages is static, so form delivery uses a form-to-email service configured
-at build time. The site works without one: until it is configured, **Send** opens
-the visitor's email client with the message pre-filled to
-`info@djneventproductions.com`.
-
-To enable direct delivery with [Web3Forms](https://web3forms.com) (free, no
-backend):
-
-1. Create an access key for `info@djneventproductions.com` at web3forms.com.
-2. In GitHub → Settings → Secrets and variables → Actions → **Variables**, add
-   - `PUBLIC_FORM_ENDPOINT` = `https://api.web3forms.com/submit`
-   - `PUBLIC_FORM_ACCESS_KEY` = your access key
-
-   The key is public by design: it can only deliver to the inbox it was
-   registered for.
-3. Re-run the deploy workflow.
-
-Any service that accepts a JSON POST works (e.g. Formspree). Change
-`PUBLIC_FORM_ENDPOINT` and drop the access key.
+There is no contact form. The Contact section and footer link to
+`djntertainmentevents@gmail.com` (mailto) and the phone number. Both are set in
+`src/lib/site.ts`.
 
 ## Content needing confirmation
 

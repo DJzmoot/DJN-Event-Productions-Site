@@ -106,7 +106,7 @@ const total = projects.length;
           ))
         }
       </div>
-      <button type="button" class="carousel-toggle" aria-label="Pause automatic slide show" data-toggle hidden>
+      <button type="button" class="carousel-toggle" aria-label="Pause carousel motion" data-toggle hidden>
         <Icon name="pause" class="icon-pause h-4 w-4" />
         <Icon name="play" class="icon-play hidden h-4 w-4" />
       </button>
@@ -130,16 +130,13 @@ const total = projects.length;
   }
   @media (min-width: 1024px) {
     .carousel-slide {
-      flex-basis: 78%;
+      flex-basis: 58%;
       padding-inline: 0.75rem;
-    }
-    .slide-card {
-      aspect-ratio: 16 / 8;
     }
   }
   @media (min-width: 1600px) {
     .carousel-slide {
-      flex-basis: 70%;
+      flex-basis: 46%;
     }
   }
 
@@ -148,27 +145,11 @@ const total = projects.length;
       linear-gradient(to top, rgb(11 11 15 / 0.92) 0%, rgb(11 11 15 / 0.55) 32%, rgb(11 11 15 / 0) 62%);
   }
 
-  /* Adjacent slides are dimmed previews. */
-  .carousel-slide .slide-card {
-    transition:
-      opacity 700ms var(--ease-out-expo),
-      transform 700ms var(--ease-out-expo);
-  }
   .carousel-slide :global(.slide-image) {
     transition: transform 1400ms var(--ease-out-expo);
   }
-  @media (min-width: 1024px) {
-    .carousel-slide:not(.is-selected) .slide-card {
-      opacity: 0.5;
-      transform: scale(0.94);
-      cursor: pointer;
-    }
-    .carousel-slide:not(.is-selected) .slide-card > :not(img):not(picture):not(.slide-shade):not(.placeholder-media) {
-      visibility: hidden;
-    }
-  }
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .carousel-slide.is-selected .slide-card:hover :global(.slide-image) {
+    .slide-card:hover :global(.slide-image) {
       transform: scale(1.03);
     }
   }
@@ -198,36 +179,14 @@ const total = projects.length;
     background: rgb(139 77 255 / 0.25);
   }
   .carousel-prev {
-    left: calc(11% - 1.625rem);
+    left: calc(var(--gutter) + 0.75rem);
   }
   .carousel-next {
-    right: calc(11% - 1.625rem);
+    right: calc(var(--gutter) + 0.75rem);
   }
   @media (min-width: 640px) {
     .carousel-arrow {
       display: inline-flex;
-    }
-    .carousel-prev {
-      left: calc(var(--gutter) + 1rem);
-    }
-    .carousel-next {
-      right: calc(var(--gutter) + 1rem);
-    }
-  }
-  @media (min-width: 1024px) {
-    .carousel-prev {
-      left: calc(11% - 1.625rem);
-    }
-    .carousel-next {
-      right: calc(11% - 1.625rem);
-    }
-  }
-  @media (min-width: 1600px) {
-    .carousel-prev {
-      left: calc(15% - 1.625rem);
-    }
-    .carousel-next {
-      right: calc(15% - 1.625rem);
     }
   }
 
@@ -280,12 +239,13 @@ const total = projects.length;
 
 <script>
   import EmblaCarousel from 'embla-carousel';
-  import Autoplay from 'embla-carousel-autoplay';
+  import AutoScroll from 'embla-carousel-auto-scroll';
 
+  // A slow, continuous film-strip glide. Hovering or focusing inside the
+  // carousel pauses it; a visible pause button keeps it paused (WCAG 2.2.2).
   const root = document.querySelector<HTMLElement>('[data-carousel]');
   if (root) {
     const viewport = root.querySelector<HTMLElement>('[data-viewport]')!;
-    const track = root.querySelector<HTMLElement>('[data-track]')!;
     const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
     const dots = [...root.querySelectorAll<HTMLButtonElement>('[data-dot]')];
     const prev = root.querySelector<HTMLButtonElement>('[data-prev]')!;
@@ -293,8 +253,9 @@ const total = projects.length;
     const toggle = root.querySelector<HTMLButtonElement>('[data-toggle]')!;
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const autoplay = Autoplay({
-      delay: 6000,
+    const autoScroll = AutoScroll({
+      speed: 0.7, // px per frame (~40px/s)
+      startDelay: 800,
       playOnInit: !reduceMotion,
       stopOnInteraction: false,
       stopOnMouseEnter: true,
@@ -304,55 +265,44 @@ const total = projects.length;
 
     const embla = EmblaCarousel(
       viewport,
-      { loop: true, align: 'center', duration: reduceMotion ? 1 : 32, skipSnaps: false },
-      [autoplay],
+      { loop: true, align: 'start', dragFree: true, duration: reduceMotion ? 1 : 30 },
+      [autoScroll],
     );
 
-    // User-controlled pause (WCAG 2.2.2). Once paused by the user, it stays paused.
     let userPaused = reduceMotion;
+    let inView = true;
+    const canPlay = () => !userPaused && inView && !document.hidden && !root.matches(':hover, :focus-within');
+    const sync = () => (canPlay() ? autoScroll.isPlaying() || autoScroll.play() : autoScroll.stop());
+
     const renderToggle = () => {
       toggle.classList.toggle('is-paused', userPaused);
-      toggle.setAttribute('aria-label', userPaused ? 'Play automatic slide show' : 'Pause automatic slide show');
-      // Announce slide changes only while not auto-rotating.
-      track.setAttribute('aria-live', userPaused ? 'polite' : 'off');
+      toggle.setAttribute('aria-label', userPaused ? 'Play carousel motion' : 'Pause carousel motion');
     };
     toggle.hidden = false;
     renderToggle();
     toggle.addEventListener('click', () => {
       userPaused = !userPaused;
-      if (userPaused) autoplay.stop();
-      else autoplay.play();
       renderToggle();
+      if (userPaused) autoScroll.stop();
+      else autoScroll.play(0);
     });
 
-    // Pause while scrolled out of view or the tab is hidden.
-    let inView = true;
-    const resume = () => {
-      if (!userPaused && inView && !document.hidden && !root.matches(':hover, :focus-within')) autoplay.play();
-    };
+    // Pause while off-screen or in a background tab.
     new IntersectionObserver(([entry]) => {
       inView = entry.isIntersecting;
-      if (inView) resume();
-      else autoplay.stop();
+      sync();
     }).observe(root);
-    document.addEventListener('visibilitychange', () => (document.hidden ? autoplay.stop() : resume()));
-    // stopOnMouseEnter/FocusIn restart on leave; respect a user pause.
-    root.addEventListener('mouseleave', () => userPaused && autoplay.stop());
-    root.addEventListener('focusout', () => queueMicrotask(() => userPaused && autoplay.stop()));
+    document.addEventListener('visibilitychange', sync);
+    // The plugin resumes on mouseleave/focusout; keep a user pause in force.
+    root.addEventListener('mouseleave', () => userPaused && autoScroll.stop());
+    root.addEventListener('focusout', () => queueMicrotask(() => userPaused && autoScroll.stop()));
 
-    // Selected state, dots and focusability of off-screen slides.
+    // Dots follow whichever project is nearest the start of the strip.
     const update = () => {
       const selected = embla.selectedScrollSnap();
-      slides.forEach((slide, i) => {
-        const active = i === selected;
-        slide.classList.toggle('is-selected', active);
-        slide.setAttribute('aria-hidden', String(!active));
-        slide.querySelectorAll<HTMLElement>('a, button').forEach((el) => (el.tabIndex = active ? 0 : -1));
-      });
       dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === selected)));
     };
     embla.on('select', update);
-    embla.on('init', update);
     embla.on('reInit', update);
     update();
 
@@ -364,34 +314,27 @@ const total = projects.length;
     placeArrows();
     new ResizeObserver(placeArrows).observe(viewport);
 
-    prev.addEventListener('click', () => {
-      embla.scrollPrev();
-      autoplay.reset();
-    });
-    next.addEventListener('click', () => {
-      embla.scrollNext();
-      autoplay.reset();
-    });
-    dots.forEach((dot, i) => dot.addEventListener('click', () => embla.scrollTo(i)));
+    // Manual navigation glides to a project, then the slow motion resumes.
+    const go = (fn: () => void) => {
+      autoScroll.stop();
+      fn();
+      const resume = () => {
+        embla.off('settle', resume);
+        if (canPlay()) autoScroll.play();
+      };
+      embla.on('settle', resume);
+    };
+    prev.addEventListener('click', () => go(() => embla.scrollPrev()));
+    next.addEventListener('click', () => go(() => embla.scrollNext()));
+    dots.forEach((dot, i) => dot.addEventListener('click', () => go(() => embla.scrollTo(i))));
 
-    // Clicking a dimmed adjacent slide brings it into focus instead of navigating.
-    slides.forEach((slide, i) =>
-      slide.addEventListener('click', (e) => {
-        if (embla.selectedScrollSnap() !== i) {
-          e.preventDefault();
-          embla.scrollTo(i);
-        }
-      }),
-    );
-
-    // Keyboard: arrow keys while focus is anywhere inside the carousel.
     root.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        embla.scrollPrev();
+        go(() => embla.scrollPrev());
       } else if (e.key === 'ArrowRight') {
         e.preventDefault();
-        embla.scrollNext();
+        go(() => embla.scrollNext());
       }
     });
   }

@@ -31,10 +31,6 @@ jobs:
 
       - name: Build site
         run: npm run build
-        env:
-          # Optional contact-form delivery (see README, "Contact form").
-          PUBLIC_FORM_ENDPOINT: ${{ vars.PUBLIC_FORM_ENDPOINT }}
-          PUBLIC_FORM_ACCESS_KEY: ${{ vars.PUBLIC_FORM_ACCESS_KEY }}
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
