@@ -19,7 +19,7 @@ gallery:
     alt: Control position with a laptop and controller in front of a gymnasium washed in blue and cyan light.
     wide: true
 featured: true
-order: 6
+order: 7
 ---
 
 A gymnasium is one of the hardest rooms to make feel like a show: high ceilings, hard surfaces and fluorescent fixtures. Here, ground-supported truss towers carried moving lights either side of the performance position, while programmed colour washes across the ceiling trusses changed the scale and mood of the whole room.

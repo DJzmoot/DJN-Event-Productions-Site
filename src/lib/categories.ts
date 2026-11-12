@@ -7,6 +7,7 @@ export const CATEGORIES = [
   { id: 'holiday', label: 'Holiday Lighting & Animated Light Shows', short: 'Holiday Lighting' },
   { id: 'architectural', label: 'Architectural Lighting', short: 'Architectural' },
   { id: 'community', label: 'Community Events & Entertainment', short: 'Community Events' },
+  { id: 'weddings', label: 'Weddings & Private Events', short: 'Weddings' },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]['id'];
