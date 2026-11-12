@@ -133,7 +133,7 @@ const schema = [
     </div>
 
     <!-- Overview / role / scope -->
-    <div class="container-x grid gap-14 py-16 md:py-24 lg:grid-cols-[1.3fr_1fr] lg:gap-20">
+    <div class="container-x grid gap-12 py-12 md:py-16 lg:grid-cols-[1.3fr_1fr] lg:gap-20">
       <section aria-labelledby="overview-title" data-reveal>
         <h2 id="overview-title" class="section-title">Overview</h2>
         <div class="prose-body mt-7 max-w-[40rem]">
@@ -181,7 +181,7 @@ const schema = [
     <!-- Video / animated media -->
     {
       (d.videoEmbed || d.media.length > 0) && (
-        <section class="container-x pb-16 md:pb-24" aria-label="Video and motion">
+        <section class="container-x pb-12 md:pb-16" aria-label="Video and motion">
           <div class="grid gap-8">
             {d.videoEmbed && (
               <div class="aspect-video overflow-hidden rounded-[4px] border border-line bg-surface">
@@ -233,7 +233,7 @@ const schema = [
     <!-- Gallery -->
     {
       gallery.length > 0 && (
-        <section class="container-x pb-20 md:pb-28" aria-labelledby="gallery-title">
+        <section class="container-x pb-14 md:pb-20" aria-labelledby="gallery-title">
           <h2 id="gallery-title" class="section-title" data-reveal>
             Gallery
           </h2>
@@ -268,7 +268,7 @@ const schema = [
     <!-- Related -->
     {
       related.length > 0 && (
-        <section class="border-t border-line py-20 md:py-24" aria-labelledby="related-title">
+        <section class="border-t border-line py-12 md:py-16" aria-labelledby="related-title">
           <div class="container-x">
             <div class="flex flex-wrap items-end justify-between gap-4">
               <h2 id="related-title" class="section-title">
@@ -291,7 +291,7 @@ const schema = [
     }
 
     <section class="border-t border-line">
-      <div class="container-x flex flex-col items-start gap-6 py-14 md:flex-row md:items-center md:justify-between">
+      <div class="container-x flex flex-col items-start gap-6 py-10 md:flex-row md:items-center md:justify-between">
         <p class="display text-[1.4rem] tracking-[0.14em] sm:text-[1.75rem]">Let’s work together.</p>
         <a href="/#contact" class="btn btn-primary">Get in touch <Icon name="arrow" /></a>
       </div>

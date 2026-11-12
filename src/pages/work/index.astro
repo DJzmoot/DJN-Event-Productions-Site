@@ -26,7 +26,7 @@ const schema = [
   current="work"
   schema={schema}
 >
-  <section class="container-x pt-[calc(var(--header-h)+3.5rem)] pb-24 md:pt-[calc(var(--header-h)+5rem)]">
+  <section class="container-x pt-[calc(var(--header-h)+2.5rem)] pb-16 md:pt-[calc(var(--header-h)+3.5rem)]">
     <div class="max-w-3xl hero-enter">
       <p class="label flex items-center gap-5 text-accent-soft">
         Portfolio <span class="h-[2px] w-10 bg-accent" aria-hidden="true"></span>
@@ -39,7 +39,7 @@ const schema = [
       </p>
     </div>
 
-    <div class="mt-12 border-y border-line py-4" data-filters hidden>
+    <div class="mt-9 border-y border-line py-3" data-filters hidden>
       <div class="-mx-1 flex flex-wrap gap-1" role="group" aria-label="Filter projects by category">
         <button type="button" class="filter-btn" aria-pressed="true" data-filter="all">All work</button>
         {
@@ -53,7 +53,7 @@ const schema = [
     </div>
     <p class="sr-only" role="status" aria-live="polite" data-filter-status></p>
 
-    <ul class="mt-12 grid gap-x-8 gap-y-14 md:grid-cols-2 xl:grid-cols-3" data-grid>
+    <ul class="mt-10 grid gap-x-8 gap-y-12 md:grid-cols-2 xl:grid-cols-3" data-grid>
       {
         projects.map((project, i) => (
           <li data-categories={project.data.categories.join(' ')}>
