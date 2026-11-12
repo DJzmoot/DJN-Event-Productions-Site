@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/manrope';
+@import './motion.css';
 
 /* ------------------------------------------------------------------ */
 /*  Design tokens                                                     */
@@ -198,24 +199,29 @@
     white-space: nowrap;
     cursor: pointer;
     transition:
-      background-color 200ms ease,
-      border-color 200ms ease,
-      color 200ms ease,
-      transform 200ms ease;
+      background-color 280ms var(--ease-out-expo),
+      border-color 280ms var(--ease-out-expo),
+      color 280ms var(--ease-out-expo),
+      transform 160ms ease;
   }
   .btn svg {
     width: 1rem;
     height: 1rem;
-    transition: transform 250ms var(--ease-out-expo);
+    transition: transform 380ms var(--ease-out-expo);
   }
-  .btn:hover svg {
-    transform: translateX(3px);
+  .btn:hover svg,
+  .btn:focus-visible svg {
+    transform: translateX(4px);
+  }
+  .btn:active {
+    transform: scale(0.98);
   }
   .btn-primary {
     background: var(--color-accent);
     color: #fff;
   }
-  .btn-primary:hover {
+  .btn-primary:hover,
+  .btn-primary:focus-visible {
     background: var(--color-accent-hover);
   }
   .btn-outline {
@@ -223,9 +229,11 @@
     color: var(--color-ink);
     background: color-mix(in oklab, var(--color-bg) 35%, transparent);
   }
-  .btn-outline:hover {
+  .btn-outline:hover,
+  .btn-outline:focus-visible {
     border-color: var(--color-accent-soft);
-    background: color-mix(in oklab, var(--color-accent) 14%, transparent);
+    color: #fff;
+    background: color-mix(in oklab, var(--color-accent) 16%, transparent);
   }
   .btn-sm {
     min-height: 2.5rem;
@@ -287,58 +295,4 @@
     mask-image: radial-gradient(ellipse at 50% 45%, #000 20%, transparent 75%);
   }
 
-}
-
-/* ------------------------------------------------------------------ */
-/*  Motion                                                            */
-/* ------------------------------------------------------------------ */
-/* Scroll reveal: only hidden when JS is running and motion is allowed. */
-@media (prefers-reduced-motion: no-preference) {
-  .js [data-reveal] {
-    opacity: 0;
-    transform: translateY(18px);
-    transition:
-      opacity 900ms var(--ease-out-expo),
-      transform 900ms var(--ease-out-expo);
-    transition-delay: var(--reveal-delay, 0ms);
-  }
-  .js [data-reveal].is-visible {
-    opacity: 1;
-    transform: none;
-  }
-
-  /* Hero entrance */
-  .hero-enter > * {
-    animation: hero-in 1100ms var(--ease-out-expo) both;
-  }
-  .hero-enter > *:nth-child(2) { animation-delay: 90ms; }
-  .hero-enter > *:nth-child(3) { animation-delay: 180ms; }
-  .hero-enter > *:nth-child(4) { animation-delay: 270ms; }
-  .hero-enter > *:nth-child(5) { animation-delay: 360ms; }
-  .hero-image {
-    animation: hero-image-in 1800ms var(--ease-out-expo) both;
-  }
-}
-
-@keyframes hero-in {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-}
-@keyframes hero-image-in {
-  from {
-    opacity: 0;
-    transform: scale(1.04);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 1ms !important;
-  }
 }

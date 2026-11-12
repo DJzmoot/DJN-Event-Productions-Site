@@ -36,22 +36,22 @@ import { SITE } from '../../lib/site';
         </p>
       </div>
 
-      <dl class="mt-7 grid grid-cols-1 border-t border-line sm:grid-cols-3">
-        <div class="about-fact">
+      <dl class="mt-7 grid grid-cols-1 border-t border-line sm:grid-cols-3" data-stagger style="--reveal-delay: 200ms">
+        <div class="about-fact" style="--i:0">
           <Icon name="calendar" class="h-7 w-7 shrink-0 text-ink/80" />
           <div>
             <dt class="sr-only">Experience</dt>
             <dd>Live events<br class="hidden sm:block" /> since {SITE.since}</dd>
           </div>
         </div>
-        <div class="about-fact">
+        <div class="about-fact" style="--i:1">
           <Icon name="network" class="h-7 w-7 shrink-0 text-ink/80" />
           <div>
             <dt class="sr-only">Disciplines</dt>
             <dd>Lighting · Production<br class="hidden sm:block" /> · Events · DJ</dd>
           </div>
         </div>
-        <div class="about-fact">
+        <div class="about-fact" style="--i:2">
           <Icon name="pin" class="h-7 w-7 shrink-0 text-ink/80" />
           <div>
             <dt class="sr-only">Service area</dt>

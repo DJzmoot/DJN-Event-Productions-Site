@@ -42,6 +42,22 @@ scripts/prepare-photos.mjs   originals → web masters
 static/                   full-resolution originals (git-ignored, never published)
 ```
 
+## Motion
+
+All motion lives in `src/styles/motion.css` (tokens at the top) and
+`src/scripts/reveal.ts`. It uses CSS transforms and opacity only, so there is no
+layout shift and no animation library. All of it is off under
+`prefers-reduced-motion`, and nothing is hidden when JavaScript is unavailable.
+
+| Hook | Effect |
+| --- | --- |
+| `data-reveal` | fades up 16px the first time it scrolls into view (`--reveal-delay` to offset) |
+| `data-stagger` + `style="--i:n"` on children | children fade up in sequence |
+| `.section-title` / `.accent-rule` | purple accent line draws in |
+| `.hero-enter` | page-load headline cue, staggered after the light comes up |
+| `.stage` (on a positioned photo wrapper) | lighting cue: photo comes up from reduced brightness over 1.2s |
+| `.kenburns` (on the photo) | 22s centred push-in from 1 to 1.035 |
+
 ## Adding a project
 
 1. Put the original photos in `static/`.

@@ -42,10 +42,10 @@ const points = [
       </div>
     </div>
 
-    <ul class="space-y-4 border-line lg:border-l lg:pl-10" data-reveal style="--reveal-delay: 200ms">
+    <ul class="space-y-4 border-line lg:border-l lg:pl-10" data-stagger style="--reveal-delay: 150ms">
       {
-        points.map((p) => (
-          <li class="flex items-start gap-3 text-[0.9375rem] text-ink/90">
+        points.map((p, i) => (
+          <li style={`--i:${i}`} class="flex items-start gap-3 text-[0.9375rem] text-ink/90">
             <Icon name="check" class="mt-0.5 h-5 w-5 shrink-0 text-accent-soft" />
             {p}
           </li>

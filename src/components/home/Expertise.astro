@@ -6,10 +6,10 @@ import { EXPERTISE } from '../../lib/site';
 <section id="expertise" class="border-t border-line py-12 md:py-14 lg:py-16" aria-labelledby="expertise-title">
   <div class="container-x">
     <h2 id="expertise-title" class="section-title" data-reveal>Expertise</h2>
-    <ul class="expertise-list mt-8 grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-8" data-reveal>
+    <ul class="expertise-list mt-8 grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-8" data-stagger>
       {
-        EXPERTISE.map((item) => (
-          <li class="expertise-item flex flex-col items-center gap-3 px-3 py-5 text-center xl:py-1">
+        EXPERTISE.map((item, i) => (
+          <li style={`--i:${i}`} class="expertise-item flex flex-col items-center gap-3 px-3 py-5 text-center xl:py-1">
             <Icon name={item.icon} class="h-9 w-9 text-ink/85" />
             <span class="text-[0.875rem] leading-snug font-semibold text-ink/90">{item.label}</span>
           </li>

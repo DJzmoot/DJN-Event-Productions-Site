@@ -1,0 +1,157 @@
+/* ==================================================================== */
+/*  Motion — cue-based, like a lighting desk                            */
+/* ==================================================================== */
+/*
+  Reusable primitives (all one-shot, transform/opacity only, no layout):
+
+  data-reveal                 fade up 16px when scrolled into view
+  data-stagger + style="--i"  children fade up in sequence when the
+                              parent is revealed
+  .section-title::after       purple accent line draws in with its heading
+  .accent-rule                standalone purple rule that draws in
+  .hero-enter                 page-load headline cue (staggered)
+  .stage                      page-load lighting cue: photo comes up from
+                              reduced brightness
+  .kenburns                   very slow push-in on a hero photo
+
+  Content is hidden only when the `.js` class is present (set inline in
+  <head>), so everything stays visible without JavaScript. Every rule here
+  sits inside `prefers-reduced-motion: no-preference`.
+*/
+
+:root {
+  --cue-fade: 800ms; /* headline / reveal fade time */
+  --cue-light: 1200ms; /* lighting cue: photo up to full */
+  --cue-rise: 16px; /* vertical travel of reveals */
+  --cue-step: 90ms; /* stagger between items */
+  --cue-house: 250ms; /* headline waits for the light to start coming up */
+  --ease-cue: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ---- Scroll reveal --------------------------------------------- */
+  .js [data-reveal],
+  .js [data-stagger] > * {
+    opacity: 0;
+    transform: translateY(var(--cue-rise));
+    transition:
+      opacity var(--cue-fade) var(--ease-cue),
+      transform var(--cue-fade) var(--ease-out-expo);
+  }
+  .js [data-reveal] {
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .js [data-stagger] > * {
+    transition-delay: calc(var(--reveal-delay, 0ms) + var(--i, 0) * 60ms);
+  }
+  .js [data-reveal].is-visible,
+  .js [data-stagger].is-visible > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ---- Accent lines draw in -------------------------------------- */
+  .js .section-title::after,
+  .js .accent-rule {
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 900ms var(--ease-out-expo) 220ms;
+  }
+  .js .section-title.is-visible::after,
+  .js .is-visible .section-title::after,
+  .js .is-visible .accent-rule,
+  .js .accent-rule.is-visible {
+    transform: scaleX(1);
+  }
+  /* In the hero the rule draws as part of the load cue. */
+  .js .hero-enter .accent-rule {
+    transform: none;
+    animation: rule-draw 900ms var(--ease-out-expo) both;
+    animation-delay: calc(var(--cue-house) + 300ms);
+    transform-origin: left center;
+  }
+
+  /* ---- Hero headline cue ----------------------------------------- */
+  .hero-enter > * {
+    animation: cue-rise var(--cue-fade) var(--ease-cue) both;
+    animation-delay: calc(var(--cue-house) + var(--i, 0) * var(--cue-step));
+  }
+  .hero-enter > :nth-child(1) { --i: 0; }
+  .hero-enter > :nth-child(2) { --i: 1; }
+  .hero-enter > :nth-child(3) { --i: 2; }
+  .hero-enter > :nth-child(4) { --i: 3; }
+  .hero-enter > :nth-child(5) { --i: 4; }
+  .hero-enter > :nth-child(6) { --i: 5; }
+
+  /* ---- Lighting cue: photo comes up from reduced brightness ------- */
+  /* A black layer fading out is cheaper than animating `filter` on a
+     large image, and keeps the photo itself painted from the first frame
+     (good for LCP). */
+  /* .stage must already be positioned (absolute/relative). */
+  .stage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: #000;
+    pointer-events: none;
+    opacity: 0;
+    animation: lights-up var(--cue-light) var(--ease-cue) both;
+  }
+
+  /* ---- Ken Burns: slow, centred push-in --------------------------- */
+  /* Centred origin means equal growth on every side, so no sideways
+     drift; the parent clips the 3.5% overscan. */
+  .kenburns {
+    transform-origin: 50% 50%;
+    animation: kenburns 22s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+    will-change: transform;
+  }
+}
+
+@keyframes cue-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--cue-rise));
+  }
+}
+@keyframes lights-up {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.035);
+  }
+}
+@keyframes rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Reduced motion: no decorative motion at all; content shown at rest. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+  .kenburns,
+  .stage::before {
+    animation: none !important;
+    transform: none !important;
+  }
+}
