@@ -56,7 +56,7 @@ layout shift and no animation library. All of it is off under
 | `.section-title` / `.accent-rule` | purple accent line draws in |
 | `.hero-enter` | page-load headline cue, staggered after the light comes up |
 | `.stage` (on a positioned photo wrapper) | lighting cue: photo comes up from reduced brightness over 1.2s |
-| `.kenburns` (on the photo) | 22s centred push-in from 1 to 1.035 |
+| `.kenburns` (on the photo) | 20s centred push-in from 1 to 1.08 (`--kenburns-scale`, `--kenburns-time`) |
 
 ## Adding a project
 

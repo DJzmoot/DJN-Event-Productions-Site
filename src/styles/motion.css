@@ -12,7 +12,7 @@
   .hero-enter                 page-load headline cue (staggered)
   .stage                      page-load lighting cue: photo comes up from
                               reduced brightness
-  .kenburns                   very slow push-in on a hero photo
+  .kenburns                   slow push-in on a hero photo (plays once)
 
   Content is hidden only when the `.js` class is present (set inline in
   <head>), so everything stays visible without JavaScript. Every rule here
@@ -26,6 +26,8 @@
   --cue-step: 90ms; /* stagger between items */
   --cue-house: 250ms; /* headline waits for the light to start coming up */
   --ease-cue: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --kenburns-scale: 1.08; /* end zoom of the hero push-in */
+  --kenburns-time: 20s; /* duration of the push-in (plays once) */
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -104,7 +106,8 @@
      drift; the parent clips the 3.5% overscan. */
   .kenburns {
     transform-origin: 50% 50%;
-    animation: kenburns 22s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+    /* Gentle ease-out: visibly moving from the first second, settling at the end. */
+    animation: kenburns var(--kenburns-time) cubic-bezier(0.3, 0.3, 0.5, 1) both;
     will-change: transform;
   }
 }
@@ -128,7 +131,7 @@
     transform: scale(1);
   }
   to {
-    transform: scale(1.035);
+    transform: scale(var(--kenburns-scale));
   }
 }
 @keyframes rule-draw {
