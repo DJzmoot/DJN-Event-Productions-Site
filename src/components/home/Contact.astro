@@ -48,9 +48,8 @@ const bg = await getImage({ src: crowd, width: 1920, format: 'webp', quality: 55
 
     <form
       class="contact-form rounded-[4px] border border-line bg-surface/85 p-6 backdrop-blur-sm sm:p-9"
-      method="post"
-      action={endpoint || `mailto:${SITE.email}`}
-      enctype={endpoint ? undefined : 'text/plain'}
+      method={endpoint ? 'post' : 'get'}
+      action={endpoint || undefined}
       data-endpoint={endpoint}
       data-email={SITE.email}
       data-reveal
