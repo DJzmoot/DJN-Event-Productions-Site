@@ -57,6 +57,8 @@ const PHOTOS = {
   // NYIT Friends Gala — National Event Connection (October 2026)
   '547F8244-4375-4ECF-93F5-3414A538215E_1_105_c.jpeg': 'nyit-friends-gala.jpg',
   '26C02942-9D54-4128-8D7F-616CC86EE2C7_1_105_c.jpeg': 'led-wall-build.jpg',
+  // Architectural lighting — red tree uplighting at an outdoor event
+  'C22F4697-BC96-43F4-B3C5-82C8DEFC0739_1_105_c.jpeg': 'architectural-tree-uplighting.jpg',
   // Nick at a production position
   'C81DC429-8502-48E6-B4DC-5B024911CCBB_1_105_c.jpeg': 'nick-manganiello-production.jpg',
 };
