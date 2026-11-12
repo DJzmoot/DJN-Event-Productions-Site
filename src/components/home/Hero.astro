@@ -10,7 +10,7 @@ import heroImage from '../../assets/photos/relay-liu-arch-stage.jpg';
       src={heroImage}
       formats={['avif', 'webp']}
       widths={[768, 1080, 1440, 1920, 2048]}
-      sizes="(min-width: 1024px) 70vw, 100vw"
+      sizes="100vw"
       alt="Relay For Life at LIU Post: an inflatable arch lit in violet over the stage, with illuminated marquee letters along the front."
       loading="eager"
       fetchpriority="high"
@@ -60,18 +60,24 @@ import heroImage from '../../assets/photos/relay-liu-arch-stage.jpg';
     object-position: 60% 50%;
   }
 
+  /* Desktop: full-bleed photo; darkened behind the text column only. */
   @media (min-width: 1024px) {
-    .hero-media {
-      left: 30%;
-    }
     .hero-media::after {
       background:
-        linear-gradient(to right, var(--color-bg) 0%, rgb(11 11 15 / 0.75) 22%, rgb(11 11 15 / 0) 55%),
-        linear-gradient(to top, var(--color-bg) 0%, rgb(11 11 15 / 0) 22%),
-        linear-gradient(to bottom, rgb(11 11 15 / 0.55) 0%, rgb(11 11 15 / 0) 20%);
+        linear-gradient(
+          to right,
+          /* Stops track the centred 1320px content column, so the text
+             always sits on the dark side whatever the viewport width. */
+          rgb(11 11 15 / 0.95) 0%,
+          rgb(11 11 15 / 0.9) calc(50% + 20px),
+          rgb(11 11 15 / 0.5) calc(50% + 200px),
+          rgb(11 11 15 / 0) calc(50% + 440px)
+        ),
+        linear-gradient(to top, var(--color-bg) 0%, rgb(11 11 15 / 0) 24%),
+        linear-gradient(to bottom, rgb(11 11 15 / 0.6) 0%, rgb(11 11 15 / 0) 20%);
     }
     .hero-media :global(img) {
-      object-position: 50% 55%;
+      object-position: 50% 58%;
     }
   }
 </style>
