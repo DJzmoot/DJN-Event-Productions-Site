@@ -15,7 +15,7 @@ cover:
   alt: Ballroom with a large central projection screen between teal-lit columns, additional screens on either side, and blue light along the stage steps beside a lion statue.
   position: 50% 45%
 featured: true
-order: 8
+order: 10
 ---
 
 Projection and lighting designed together: a central screen framed by teal-lit columns, flanking displays to extend the content across the room, and blue edge lighting tracing the stage and stairs.

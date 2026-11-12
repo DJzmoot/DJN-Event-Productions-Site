@@ -27,7 +27,7 @@ media:
     width: 1280
     height: 961
 featured: true
-order: 9
+order: 11
 ---
 
 An outdoor holiday market needs lighting and sound that survive the weather and still feel festive. The Riverhead Merry Market used colour-changing uplighting through the trees, festoon lighting over the walkway and a distributed PA with multi-zone control, giving every part of the market atmosphere without overwhelming the vendors.

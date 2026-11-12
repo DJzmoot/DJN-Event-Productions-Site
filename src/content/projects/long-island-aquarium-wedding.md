@@ -17,7 +17,7 @@ cover:
   alt: Panorama of a wedding reception at the Long Island Aquarium, with round tables of white linen and candles among aquarium tanks, stone arches and a balcony washed in blue light.
   position: 50% 55%
 featured: true
-order: 5
+order: 7
 ---
 
 The Long Island Aquarium makes an unusual reception venue: guests dine among the tanks, beneath a stone balcony and beside murals of the sea.

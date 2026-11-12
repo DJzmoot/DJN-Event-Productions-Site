@@ -17,7 +17,7 @@ cover:
   alt: An orchestra, conductor and featured vocalist performing on the Suffolk Theater stage beneath a drape striped in blue and amber light, seen from the balcony over the darkened audience.
   position: 50% 55%
 featured: true
-order: 4
+order: 6
 ---
 
 Lighting an orchestra is about restraint: the musicians need clean, even light to read their music and see the conductor, and the audience needs to see every section clearly.

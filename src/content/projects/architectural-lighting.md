@@ -11,7 +11,7 @@ scope:
   - Programmable colour and scheduled scenes
 placeholder: true
 featured: true
-order: 10
+order: 12
 ---
 
 Architectural lighting for buildings, landmarks and outdoor spaces, from façade and feature lighting to permanent or semi-permanent installations with programmable colour and scheduled scenes.

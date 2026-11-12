@@ -19,7 +19,7 @@ cover:
   alt: A home and yard at night covered in pixel lighting, with a tall light tree, arches and outlined rooflines glowing in warm and coloured light.
   position: 50% 50%
 featured: true
-order: 6
+order: 8
 ---
 
 Lights on Marquette is a residential holiday light show built around more than 10,000 individually addressable pixels, choreographed in xLights and synchronised to music.

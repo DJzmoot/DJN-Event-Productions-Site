@@ -21,7 +21,7 @@ gallery:
     alt: Green and blue beams fanning out from moving lights on the overhead truss and side boom across the stage, with a floor-mounted moving light in the foreground and the theater's Art Deco wall washed in magenta.
     wide: true
 featured: true
-order: 3
+order: 5
 ---
 
 The Suffolk Theater is a restored 1930s Art Deco venue in Riverhead, where the ornate proscenium and drape are part of every show.

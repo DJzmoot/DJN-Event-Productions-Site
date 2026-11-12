@@ -54,6 +54,9 @@ const PHOTOS = {
   '71005C35-6450-4DFD-89CE-6213A94DA215_1_105_c.jpeg': 'suffolk-theater-orchestra.jpg',
   // Long Island Aquarium, Riverhead NY — wedding (November 2025)
   'A3D87452-9AC7-47AF-AEBE-31E961F4B747_1_102_a.jpeg': 'long-island-aquarium-wedding.jpg',
+  // NYIT Friends Gala — National Event Connection (October 2026)
+  '547F8244-4375-4ECF-93F5-3414A538215E_1_105_c.jpeg': 'nyit-friends-gala.jpg',
+  '26C02942-9D54-4128-8D7F-616CC86EE2C7_1_105_c.jpeg': 'led-wall-build.jpg',
   // Nick at a production position
   'C81DC429-8502-48E6-B4DC-5B024911CCBB_1_105_c.jpeg': 'nick-manganiello-production.jpg',
 };
