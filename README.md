@@ -1,11 +1,98 @@
+# DJN Event Productions — djneventproductions.com
 
-  # Design Dark-Themed Marketing Site
+Portfolio site for Nick Manganiello / DJN Event Productions. Built with
+[Astro](https://astro.build) (static output), Tailwind CSS v4, Embla Carousel
+and self-hosted Manrope.
 
-  This is a code bundle for Design Dark-Themed Marketing Site. The original project is available at https://www.figma.com/design/SXdHXLTk5uoRLiLoJ9PSr7/Design-Dark-Themed-Marketing-Site.
+## Development
 
-  ## Running the code
+Requires Node ≥ 22.12.
 
-  Run `npm i` to install the dependencies.
+```sh
+npm ci
+npm run dev       # http://localhost:4321
+npm run build     # type-checks (astro check) then builds to dist/
+npm run preview   # serve the built site
+```
 
-  Run `npm run dev` to start the development server.
-  
+> **Windows note:** run builds from PowerShell or cmd, not Git Bash. Under Git
+> Bash, Vite sees the drive letter in a different case and silently drops all
+> CSS from the built pages. CI (Linux) is unaffected.
+
+## Deployment
+
+`.github/workflows/deploy.yml` builds and publishes to **GitHub Pages** on every
+push to `main`. The custom domain `djneventproductions.com` is configured in the
+repository's Pages settings, so no `CNAME` file or `base` path is needed.
+
+## Project structure
+
+```
+src/
+  content/projects/*.md   one file per portfolio project (front matter + overview)
+  content.config.ts       project schema
+  assets/photos/          web-ready master photos (optimised to AVIF/WebP at build)
+  components/home/        homepage sections (Hero, WorkCarousel, Expertise, …)
+  components/             Header, Footer, ProjectCard, Icon, Wordmark
+  layouts/Base.astro      <head>, SEO / Open Graph / JSON-LD, header & footer
+  lib/site.ts             contact details, nav, expertise list, form options
+  lib/categories.ts       portfolio categories / filters
+  pages/                  /, /work/, /work/[slug]/, 404
+scripts/prepare-photos.mjs   originals → web masters
+static/                   full-resolution originals (git-ignored, never published)
+```
+
+## Adding a project
+
+1. Put the original photos in `static/`.
+2. Add a `'original.jpg': 'project-name-detail.jpg'` line to `PHOTOS` in
+   `scripts/prepare-photos.mjs`, then run `node scripts/prepare-photos.mjs`.
+   This resizes to a 2560px master and **strips all metadata, including phone GPS
+   location**. Originals in `static/` are never modified.
+3. Copy an existing file in `src/content/projects/` and edit it. The file name
+   becomes the URL (`/work/<file-name>/`). Key fields:
+   - `categories`: one or more of `live`, `lighting`, `video`, `holiday`,
+     `architectural`, `community`. The first is the primary category.
+   - `role`: Nick's specific contribution. Keep this separate from the overall
+     production.
+   - `productionPartner`: only once the partner has approved the attribution.
+   - `featured: true` puts it in the homepage carousel. `order` sets position.
+   - `placeholder: true` shows a clearly marked "photography coming soon" panel.
+   - `videoEmbed` (YouTube/Vimeo embed URL) or `media` (files in `public/media`)
+     for video and motion.
+4. `npm run build` validates the front matter against the schema.
+
+## Contact form
+
+GitHub Pages is static, so form delivery uses a form-to-email service configured
+at build time. The site works without one: until it is configured, **Send** opens
+the visitor's email client with the message pre-filled to
+`info@djneventproductions.com`.
+
+To enable direct delivery with [Web3Forms](https://web3forms.com) (free, no
+backend):
+
+1. Create an access key for `info@djneventproductions.com` at web3forms.com.
+2. In GitHub → Settings → Secrets and variables → Actions → **Variables**, add
+   - `PUBLIC_FORM_ENDPOINT` = `https://api.web3forms.com/submit`
+   - `PUBLIC_FORM_ACCESS_KEY` = your access key
+
+   The key is public by design: it can only deliver to the inbox it was
+   registered for.
+3. Re-run the deploy workflow.
+
+Any service that accepts a JSON POST works (e.g. Formspree). Change
+`PUBLIC_FORM_ENDPOINT` and drop the access key.
+
+## Content needing confirmation
+
+Project files contain `# REVIEW:` comments where details still need Nick's
+confirmation (exact role, event names, years, locations, production-partner
+credit). These comments are never rendered.
+
+- **Architectural Lighting** is a placeholder until project photography exists.
+- Not published: `load-in-truck.jpeg` (readable licence plate),
+  `kayaks-beach.jpeg`, and the audience photo from the old Wix site (`c19c76_…avif`),
+  which may be a stock image.
+- Photographer credits for the Relay For Life event photos (April 13, 2019) are
+  unknown. Add `photoCredit:` to the project once known.

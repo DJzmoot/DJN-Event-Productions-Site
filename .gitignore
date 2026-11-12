@@ -1,0 +1,21 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# full-resolution original photography (kept locally, never published;
+# see scripts/prepare-photos.mjs)
+static/
+
+# environment
+.env
+.env.*
+!.env.example
+
+# logs / OS
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.playwright-mcp/

@@ -1,0 +1,67 @@
+---
+import Icon from '../Icon.astro';
+import { EXPERTISE } from '../../lib/site';
+---
+
+<section id="expertise" class="border-t border-line py-16 md:py-20" aria-labelledby="expertise-title">
+  <div class="container-x">
+    <h2 id="expertise-title" class="section-title" data-reveal>Expertise</h2>
+    <ul class="expertise-list mt-10 grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-8" data-reveal>
+      {
+        EXPERTISE.map((item) => (
+          <li class="expertise-item flex flex-col items-center gap-4 px-3 py-6 text-center xl:py-2">
+            <Icon name={item.icon} class="h-9 w-9 text-ink/85" />
+            <span class="text-[0.875rem] leading-snug font-semibold text-ink/90">{item.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* Hairline dividers between items, adapting to the grid columns. */
+  .expertise-item {
+    position: relative;
+  }
+  .expertise-item::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 22%;
+    bottom: 22%;
+    width: 1px;
+    background: var(--color-line-strong);
+  }
+  .expertise-item:nth-child(2n)::after {
+    display: none;
+  }
+  .expertise-item:nth-child(n + 3) {
+    border-top: 1px solid var(--color-line);
+  }
+  @media (min-width: 640px) {
+    .expertise-item:nth-child(2n)::after {
+      display: block;
+    }
+    .expertise-item:nth-child(4n)::after {
+      display: none;
+    }
+    .expertise-item:nth-child(n + 3) {
+      border-top: 0;
+    }
+    .expertise-item:nth-child(n + 5) {
+      border-top: 1px solid var(--color-line);
+    }
+  }
+  @media (min-width: 1280px) {
+    .expertise-item:nth-child(4n)::after {
+      display: block;
+    }
+    .expertise-item:last-child::after {
+      display: none;
+    }
+    .expertise-item:nth-child(n + 5) {
+      border-top: 0;
+    }
+  }
+</style>

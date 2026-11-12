@@ -1,0 +1,131 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getProjects } from '../../lib/projects';
+import { CATEGORIES } from '../../lib/categories';
+import { SITE } from '../../lib/site';
+
+const projects = await getProjects();
+const used = new Set(projects.flatMap((p) => p.data.categories));
+const filters = CATEGORIES.filter((c) => used.has(c.id));
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Work — DJN Event Productions',
+    url: `${SITE.url}/work/`,
+    hasPart: projects.map((p) => ({ '@type': 'CreativeWork', name: p.data.title, url: `${SITE.url}/work/${p.id}/` })),
+  },
+];
+---
+
+<Base
+  title="Work"
+  description="Selected lighting design, technical direction, video, holiday light show and live event work by Nick Manganiello of DJN Event Productions."
+  current="work"
+  schema={schema}
+>
+  <section class="container-x pt-[calc(var(--header-h)+3.5rem)] pb-24 md:pt-[calc(var(--header-h)+5rem)]">
+    <div class="max-w-3xl hero-enter">
+      <p class="label flex items-center gap-5 text-accent-soft">
+        Portfolio <span class="h-[2px] w-10 bg-accent" aria-hidden="true"></span>
+      </p>
+      <h1 class="display mt-5 text-[2.4rem] sm:text-[3.2rem]">Selected Work</h1>
+      <p class="mt-5 max-w-2xl text-[1.0625rem] leading-relaxed text-muted">
+        Lighting design, technical direction, show programming and live operation — from university gymnasiums and
+        ballrooms to a lighthouse in the middle of Huntington Bay. Each project notes Nick’s specific role within the
+        wider production.
+      </p>
+    </div>
+
+    <div class="mt-12 border-y border-line py-4" data-filters hidden>
+      <div class="-mx-1 flex flex-wrap gap-1" role="group" aria-label="Filter projects by category">
+        <button type="button" class="filter-btn" aria-pressed="true" data-filter="all">All work</button>
+        {
+          filters.map((c) => (
+            <button type="button" class="filter-btn" aria-pressed="false" data-filter={c.id}>
+              {c.short}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+    <p class="sr-only" role="status" aria-live="polite" data-filter-status></p>
+
+    <ul class="mt-12 grid gap-x-8 gap-y-14 md:grid-cols-2 xl:grid-cols-3" data-grid>
+      {
+        projects.map((project, i) => (
+          <li data-categories={project.data.categories.join(' ')}>
+            <ProjectCard project={project} eager={i < 3} headingLevel="h2" />
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-12 hidden text-muted" data-empty>No projects in this category yet.</p>
+  </section>
+</Base>
+
+<style>
+  .filter-btn {
+    min-height: 2.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    transition:
+      color 200ms ease,
+      background-color 200ms ease;
+  }
+  .filter-btn:hover {
+    color: var(--color-ink);
+  }
+  .filter-btn[aria-pressed='true'] {
+    color: #fff;
+    background: color-mix(in oklab, var(--color-accent) 22%, transparent);
+    box-shadow: inset 0 -2px 0 var(--color-accent);
+  }
+  [data-grid] li {
+    transition: opacity 300ms ease;
+  }
+</style>
+
+<script>
+  import { CATEGORIES } from '../../lib/categories';
+
+  const bar = document.querySelector<HTMLElement>('[data-filters]');
+  if (bar) {
+    bar.hidden = false; // filters need JS; without it every project is listed
+    const buttons = [...bar.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const items = [...document.querySelectorAll<HTMLElement>('[data-grid] > li')];
+    const empty = document.querySelector<HTMLElement>('[data-empty]')!;
+    const status = document.querySelector<HTMLElement>('[data-filter-status]')!;
+
+    const apply = (id: string, push = true) => {
+      if (!buttons.some((b) => b.dataset.filter === id)) id = 'all';
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === id)));
+      let shown = 0;
+      for (const item of items) {
+        const match = id === 'all' || item.dataset.categories!.split(' ').includes(id);
+        item.hidden = !match;
+        if (match) shown++;
+      }
+      empty.classList.toggle('hidden', shown > 0);
+      const name = id === 'all' ? 'all categories' : CATEGORIES.find((c) => c.id === id)?.label;
+      status.textContent = `Showing ${shown} project${shown === 1 ? '' : 's'} in ${name}.`;
+      if (push) {
+        const url = new URL(location.href);
+        if (id === 'all') url.searchParams.delete('category');
+        else url.searchParams.set('category', id);
+        history.replaceState(null, '', url);
+      }
+    };
+
+    buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.filter!)));
+    const initial = new URL(location.href).searchParams.get('category');
+    if (initial) apply(initial, false);
+  }
+</script>

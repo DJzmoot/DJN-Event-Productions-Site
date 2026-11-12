@@ -1,0 +1,397 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getProjects, relatedProjects, type Project } from '../../lib/projects';
+import { categoryLabel } from '../../lib/categories';
+import { SITE } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const all = await getProjects();
+  return all.map((project) => ({ params: { slug: project.id }, props: { project, all } }));
+}
+
+interface Props {
+  project: Project;
+  all: Project[];
+}
+const { project, all } = Astro.props;
+const d = project.data;
+const { Content } = await render(project);
+const related = relatedProjects(project, all);
+
+// Full-size versions for the lightbox.
+const gallery = await Promise.all(
+  d.gallery.map(async (g) => ({
+    ...g,
+    full: await getImage({ src: g.src, width: Math.min(g.src.width, 2400), format: 'webp', quality: 80 }),
+  })),
+);
+
+// Still frame shown instead of animated media for reduced-motion users.
+const still = d.cover ? await getImage({ src: d.cover.src, width: 1280, format: 'webp' }) : undefined;
+
+const meta = [
+  { label: 'Category', value: d.categories.map((c) => categoryLabel(c)).join(', ') },
+  d.location && { label: 'Location', value: d.location },
+  d.year && { label: 'Year', value: String(d.year) },
+  d.productionPartner && { label: 'Production partner', value: d.productionPartner },
+  d.client && { label: 'Client', value: d.client },
+].filter(Boolean) as { label: string; value: string }[];
+
+const url = `${SITE.url}/work/${project.id}/`;
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: d.title,
+    description: d.summary,
+    url,
+    ...(d.year ? { dateCreated: String(d.year) } : {}),
+    ...(d.location ? { locationCreated: { '@type': 'Place', name: d.location } } : {}),
+    creator: { '@id': `${SITE.url}/#nick` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Work', item: `${SITE.url}/work/` },
+      { '@type': 'ListItem', position: 3, name: d.title, item: url },
+    ],
+  },
+];
+---
+
+<Base
+  title={d.title}
+  description={d.summary}
+  image={d.cover?.src}
+  imageAlt={d.cover?.alt}
+  current="work"
+  schema={schema}
+  type="article"
+>
+  <article>
+    <!-- Hero -->
+    <header class="relative isolate flex min-h-[clamp(520px,78svh,820px)] items-end overflow-hidden">
+      <div class="absolute inset-0 -z-10">
+        {
+          d.cover && !d.placeholder ? (
+            <Image
+              src={d.cover.src}
+              alt={d.cover.alt}
+              widths={[768, 1080, 1440, 1920, 2560]}
+              sizes="100vw"
+              loading="eager"
+              fetchpriority="high"
+              class="hero-image h-full w-full object-cover"
+              style={`object-position:${d.cover.position}`}
+            />
+          ) : (
+            <div class="placeholder-media h-full w-full" />
+          )
+        }
+        <div class="project-hero-shade absolute inset-0" aria-hidden="true"></div>
+      </div>
+      <div class="container-x hero-enter pt-[calc(var(--header-h)+4rem)] pb-12 md:pb-16">
+        <nav aria-label="Breadcrumb" class="label text-[0.6875rem] text-ink/70">
+          <a href="/work/" class="inline-flex items-center gap-2 hover:text-ink">
+            <Icon name="chevron-left" class="h-3.5 w-3.5" /> All work
+          </a>
+        </nav>
+        <p class="label mt-6 flex items-center gap-3 text-[0.6875rem]">
+          <span class="h-2.5 w-2.5 bg-accent" aria-hidden="true"></span>
+          {d.eyebrow ?? categoryLabel(d.categories[0])}
+        </p>
+        <h1 class="display mt-4 max-w-4xl text-[2.1rem] sm:text-[3rem] lg:text-[3.6rem]">{d.title}</h1>
+        {d.services.length > 0 && <p class="label mt-5 text-ink/80">{d.services.join('  /  ')}</p>}
+        {
+          d.placeholder && (
+            <p class="label mt-6 inline-block border border-line-strong px-3 py-2 text-[0.6875rem] text-muted">
+              Placeholder · Project photography coming soon
+            </p>
+          )
+        }
+      </div>
+    </header>
+
+    <!-- Meta strip -->
+    <div class="border-y border-line bg-surface/60">
+      <dl class="container-x grid grid-cols-2 gap-x-8 gap-y-5 py-7 md:flex md:flex-wrap md:gap-x-14">
+        {
+          meta.map((m) => (
+            <div>
+              <dt class="label text-[0.625rem] text-faint">{m.label}</dt>
+              <dd class="mt-1.5 text-[0.9375rem] font-semibold">{m.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <!-- Overview / role / scope -->
+    <div class="container-x grid gap-14 py-16 md:py-24 lg:grid-cols-[1.3fr_1fr] lg:gap-20">
+      <section aria-labelledby="overview-title" data-reveal>
+        <h2 id="overview-title" class="section-title">Overview</h2>
+        <div class="prose-body mt-7 max-w-[40rem]">
+          <Content />
+        </div>
+      </section>
+
+      <aside class="space-y-10" data-reveal style="--reveal-delay: 100ms">
+        <section aria-labelledby="role-title" class="border-l-2 border-accent pl-6">
+          <h2 id="role-title" class="label text-accent-soft">Nick’s role</h2>
+          <p class="mt-3 text-[1.0625rem] leading-relaxed text-ink">{d.role}</p>
+        </section>
+
+        {
+          d.scope.length > 0 && (
+            <section aria-labelledby="scope-title">
+              <h2 id="scope-title" class="label text-faint">Technical scope</h2>
+              <ul class="mt-4 space-y-3">
+                {d.scope.map((s) => (
+                  <li class="flex items-start gap-3 text-[0.9375rem] text-ink/90">
+                    <Icon name="check" class="mt-0.5 h-5 w-5 shrink-0 text-accent-soft" />
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        {
+          d.equipment && d.equipment.length > 0 && (
+            <section aria-labelledby="equipment-title">
+              <h2 id="equipment-title" class="label text-faint">Technologies &amp; equipment</h2>
+              <ul class="mt-4 flex flex-wrap gap-2">
+                {d.equipment.map((e) => (
+                  <li class="border border-line-strong px-3 py-1.5 text-[0.8125rem] text-muted">{e}</li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+      </aside>
+    </div>
+
+    <!-- Video / animated media -->
+    {
+      (d.videoEmbed || d.media.length > 0) && (
+        <section class="container-x pb-16 md:pb-24" aria-label="Video and motion">
+          <div class="grid gap-8">
+            {d.videoEmbed && (
+              <div class="aspect-video overflow-hidden rounded-[4px] border border-line bg-surface">
+                <iframe
+                  src={d.videoEmbed}
+                  title={`${d.title} — video`}
+                  class="h-full w-full"
+                  loading="lazy"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen
+                />
+              </div>
+            )}
+            {d.media.map((m) =>
+              m.kind === 'video' ? (
+                <video
+                  class="w-full rounded-[4px] border border-line"
+                  src={m.src}
+                  poster={m.poster}
+                  width={m.width}
+                  height={m.height}
+                  controls
+                  preload="none"
+                  playsinline
+                  aria-label={m.alt}
+                />
+              ) : (
+                <figure data-reveal>
+                  <picture>
+                    {still && <source media="(prefers-reduced-motion: reduce)" srcset={still.src} />}
+                    <img
+                    src={m.src}
+                    alt={m.alt}
+                    width={m.width}
+                    height={m.height}
+                    loading="lazy"
+                    decoding="async"
+                    class="w-full rounded-[4px] border border-line"
+                  />
+                  </picture>
+                </figure>
+              ),
+            )}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Gallery -->
+    {
+      gallery.length > 0 && (
+        <section class="container-x pb-20 md:pb-28" aria-labelledby="gallery-title">
+          <h2 id="gallery-title" class="section-title" data-reveal>
+            Gallery
+          </h2>
+          <ul class="gallery mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {gallery.map((g, i) => (
+              <li class:list={[g.wide && 'sm:col-span-2']} data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}>
+                <button
+                  type="button"
+                  class="zoom-frame block h-full w-full cursor-zoom-in rounded-[4px] border border-line bg-surface"
+                  data-lightbox={i}
+                  data-full={g.full.src}
+                  data-alt={g.alt}
+                  data-credit={g.credit ?? d.photoCredit ?? ''}
+                  aria-label={`View larger: ${g.alt}`}
+                >
+                  <Image
+                    src={g.src}
+                    alt=""
+                    widths={[480, 768, 1080, 1440]}
+                    sizes={g.wide ? '(min-width: 1024px) 66vw, 100vw' : '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'}
+                    class="h-full max-h-[34rem] w-full object-cover"
+                  />
+                </button>
+              </li>
+            ))}
+          </ul>
+          {d.photoCredit && <p class="mt-6 text-xs text-faint">Photography: {d.photoCredit}</p>}
+        </section>
+      )
+    }
+
+    <!-- Related -->
+    {
+      related.length > 0 && (
+        <section class="border-t border-line py-20 md:py-24" aria-labelledby="related-title">
+          <div class="container-x">
+            <div class="flex flex-wrap items-end justify-between gap-4">
+              <h2 id="related-title" class="section-title">
+                Related Work
+              </h2>
+              <a href="/work/" class="link-arrow label text-[0.6875rem]">
+                View all projects <Icon name="arrow" />
+              </a>
+            </div>
+            <ul class="mt-10 grid gap-x-8 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
+              {related.map((p) => (
+                <li>
+                  <ProjectCard project={p} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )
+    }
+
+    <section class="border-t border-line">
+      <div class="container-x flex flex-col items-start gap-6 py-14 md:flex-row md:items-center md:justify-between">
+        <p class="display text-[1.4rem] tracking-[0.14em] sm:text-[1.75rem]">Let’s work together.</p>
+        <a href="/#contact" class="btn btn-primary">Get in touch <Icon name="arrow" /></a>
+      </div>
+    </section>
+  </article>
+
+  <dialog class="lightbox" aria-label="Image viewer" data-lightbox-dialog>
+    <figure class="flex h-full w-full flex-col items-center justify-center gap-4 p-4 sm:p-10">
+      <img alt="" class="lightbox-img max-h-[82vh] w-auto max-w-full object-contain" data-lightbox-img />
+      <figcaption class="max-w-3xl text-center text-sm text-muted" data-lightbox-caption></figcaption>
+    </figure>
+    <button type="button" class="lightbox-btn top-4 right-4" aria-label="Close" data-lightbox-close>
+      <Icon name="close" class="h-5 w-5" />
+    </button>
+    <button type="button" class="lightbox-btn top-1/2 left-4 -translate-y-1/2" aria-label="Previous image" data-lightbox-prev>
+      <Icon name="chevron-left" class="h-5 w-5" />
+    </button>
+    <button type="button" class="lightbox-btn top-1/2 right-4 -translate-y-1/2" aria-label="Next image" data-lightbox-next>
+      <Icon name="chevron-right" class="h-5 w-5" />
+    </button>
+  </dialog>
+</Base>
+
+<style>
+  .project-hero-shade {
+    background:
+      linear-gradient(to top, var(--color-bg) 0%, rgb(11 11 15 / 0.7) 35%, rgb(11 11 15 / 0.15) 70%, rgb(11 11 15 / 0.55) 100%);
+  }
+  .gallery :global(img) {
+    aspect-ratio: 4 / 3;
+  }
+  .gallery li[class*='col-span-2'] :global(img) {
+    aspect-ratio: 16 / 8;
+  }
+  .lightbox {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(5 5 8 / 0.96);
+    color: var(--color-ink);
+  }
+  .lightbox::backdrop {
+    background: rgb(5 5 8 / 0.9);
+  }
+  .lightbox-btn {
+    position: absolute;
+    display: inline-flex;
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid rgb(245 245 247 / 0.3);
+    background: rgb(11 11 15 / 0.7);
+    transition: border-color 200ms ease;
+  }
+  .lightbox-btn:hover {
+    border-color: var(--color-accent);
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox-dialog]');
+  const triggers = [...document.querySelectorAll<HTMLButtonElement>('[data-lightbox]')];
+  if (dialog && triggers.length) {
+    const img = dialog.querySelector<HTMLImageElement>('[data-lightbox-img]')!;
+    const caption = dialog.querySelector<HTMLElement>('[data-lightbox-caption]')!;
+    let index = 0;
+    let opener: HTMLElement | null = null;
+
+    const show = (i: number) => {
+      index = (i + triggers.length) % triggers.length;
+      const t = triggers[index];
+      img.src = t.dataset.full!;
+      img.alt = t.dataset.alt!;
+      caption.textContent = t.dataset.alt + (t.dataset.credit ? ` — Photo: ${t.dataset.credit}` : '');
+    };
+    triggers.forEach((t, i) =>
+      t.addEventListener('click', () => {
+        opener = t;
+        show(i);
+        dialog.showModal();
+      }),
+    );
+    dialog.querySelector('[data-lightbox-close]')!.addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-lightbox-prev]')!.addEventListener('click', () => show(index - 1));
+    dialog.querySelector('[data-lightbox-next]')!.addEventListener('click', () => show(index + 1));
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(index - 1);
+      if (e.key === 'ArrowRight') show(index + 1);
+    });
+    // Click on the backdrop area (not the image or buttons) closes.
+    dialog.addEventListener('click', (e) => {
+      const el = e.target as HTMLElement;
+      if (el === dialog || el.tagName === 'FIGURE') dialog.close();
+    });
+    dialog.addEventListener('close', () => opener?.focus());
+  }
+</script>

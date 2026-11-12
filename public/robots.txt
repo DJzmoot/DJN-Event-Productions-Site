@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://djneventproductions.com/sitemap-index.xml

@@ -1,0 +1,378 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/manrope';
+
+/* ------------------------------------------------------------------ */
+/*  Design tokens                                                     */
+/* ------------------------------------------------------------------ */
+@theme {
+  --color-bg: #0b0b0f;
+  --color-surface: #141419;
+  --color-surface-2: #1b1b22;
+  --color-line: #26262e;
+  --color-line-strong: #34343e;
+  --color-ink: #f5f5f7;
+  --color-muted: #a1a1aa;
+  --color-faint: #71717a;
+  --color-accent: #8b4dff;
+  --color-accent-hover: #9d68ff;
+  /* Lighter accent for small text on dark backgrounds (AA contrast). */
+  --color-accent-soft: #b18cff;
+
+  --font-sans: 'Manrope Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --tracking-label: 0.18em;
+  --tracking-nav: 0.16em;
+  --tracking-display: 0.06em;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                              */
+/* ------------------------------------------------------------------ */
+@layer base {
+  :root {
+    color-scheme: dark;
+    --header-h: 72px;
+    --gutter: clamp(1rem, 4vw, 3rem);
+  }
+
+  html {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    min-height: 100dvh;
+    background: var(--color-bg);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 60%, transparent);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent-soft);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+/* Cross-document page transitions (progressive enhancement, no JS). */
+@view-transition {
+  navigation: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 280ms;
+  animation-timing-function: ease;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Components                                                        */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* Uppercase, widely tracked label used for eyebrows, meta and nav. */
+  .label {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .display {
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-display);
+    line-height: 1.04;
+  }
+
+  /* Section heading: SELECTED WORK —— */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    font-size: clamp(1.25rem, 1rem + 1vw, 1.625rem);
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+  .section-title::after {
+    content: '';
+    width: 3.25rem;
+    height: 2px;
+    background: var(--color-accent);
+    flex: none;
+  }
+
+  .prose-body {
+    color: var(--color-muted);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+  .prose-body p + p {
+    margin-top: 1.1em;
+  }
+  .prose-body strong {
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+  .prose-body a {
+    color: var(--color-accent-soft);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+  .prose-body a:hover {
+    color: var(--color-ink);
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    min-height: 3rem;
+    padding: 0.8rem 1.4rem;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 200ms ease,
+      border-color 200ms ease,
+      color 200ms ease,
+      transform 200ms ease;
+  }
+  .btn svg {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 250ms var(--ease-out-expo);
+  }
+  .btn:hover svg {
+    transform: translateX(3px);
+  }
+  .btn-primary {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background: var(--color-accent-hover);
+  }
+  .btn-outline {
+    border-color: color-mix(in oklab, var(--color-accent) 75%, transparent);
+    color: var(--color-ink);
+    background: color-mix(in oklab, var(--color-bg) 35%, transparent);
+  }
+  .btn-outline:hover {
+    border-color: var(--color-accent-soft);
+    background: color-mix(in oklab, var(--color-accent) 14%, transparent);
+  }
+  .btn-sm {
+    min-height: 2.5rem;
+    padding: 0.65rem 1rem;
+    font-size: 0.6875rem;
+  }
+
+  /* Text link with arrow: EXPLORE THE FULL PORTFOLIO → */
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--color-ink);
+    transition: color 200ms ease;
+  }
+  .link-arrow svg {
+    width: 0.9rem;
+    height: 0.9rem;
+    color: var(--color-accent-soft);
+    transition: transform 250ms var(--ease-out-expo);
+  }
+  .link-arrow:hover {
+    color: var(--color-accent-soft);
+  }
+  .link-arrow:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* Image zoom on hover inside a .zoom-frame */
+  .zoom-frame {
+    overflow: hidden;
+  }
+  .zoom-frame img {
+    transition: transform 900ms var(--ease-out-expo);
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .zoom-frame:hover img,
+    a:focus-visible .zoom-frame img {
+      transform: scale(1.04);
+    }
+  }
+
+  /* Placeholder for projects without approved photography */
+  .placeholder-media {
+    position: relative;
+    background:
+      linear-gradient(135deg, #17141f 0%, #0e0e13 60%, #120f19 100%);
+    overflow: hidden;
+  }
+  .placeholder-media::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--color-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.35;
+    mask-image: radial-gradient(ellipse at 50% 45%, #000 20%, transparent 75%);
+  }
+
+  /* Form fields */
+  .field-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .field {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: 3px;
+    border: 1px solid var(--color-line-strong);
+    background: color-mix(in oklab, var(--color-bg) 70%, transparent);
+    color: var(--color-ink);
+    font: inherit;
+    font-size: 1rem;
+    transition:
+      border-color 200ms ease,
+      background-color 200ms ease;
+  }
+  .field::placeholder {
+    color: var(--color-faint);
+  }
+  .field:hover {
+    border-color: #4a4a56;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    background: var(--color-bg);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent) 25%, transparent);
+  }
+  select.field {
+    appearance: none;
+    padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    background-size: 1rem;
+  }
+  select.field option {
+    background: var(--color-surface);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Motion                                                            */
+/* ------------------------------------------------------------------ */
+/* Scroll reveal: only hidden when JS is running and motion is allowed. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 900ms var(--ease-out-expo),
+      transform 900ms var(--ease-out-expo);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Hero entrance */
+  .hero-enter > * {
+    animation: hero-in 1100ms var(--ease-out-expo) both;
+  }
+  .hero-enter > *:nth-child(2) { animation-delay: 90ms; }
+  .hero-enter > *:nth-child(3) { animation-delay: 180ms; }
+  .hero-enter > *:nth-child(4) { animation-delay: 270ms; }
+  .hero-enter > *:nth-child(5) { animation-delay: 360ms; }
+  .hero-image {
+    animation: hero-image-in 1800ms var(--ease-out-expo) both;
+  }
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes hero-image-in {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

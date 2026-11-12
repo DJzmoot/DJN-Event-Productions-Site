@@ -1,0 +1,190 @@
+---
+import { getImage } from 'astro:assets';
+import Icon from '../Icon.astro';
+import { PROJECT_TYPES, SITE } from '../../lib/site';
+import crowd from '../../assets/photos/relay-liu-audience.jpg';
+
+// Delivery endpoint is configured at build time (see README → Contact form).
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+const accessKey = import.meta.env.PUBLIC_FORM_ACCESS_KEY || '';
+const bg = await getImage({ src: crowd, width: 1920, format: 'webp', quality: 55 });
+---
+
+<section
+  id="contact"
+  class="contact relative isolate overflow-hidden border-t border-line py-20 md:py-28"
+  aria-labelledby="contact-title"
+  style={`--contact-bg:url(${bg.src})`}
+>
+  <div class="container-x grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
+    <div data-reveal>
+      <h2 id="contact-title" class="display text-[2rem] tracking-[0.12em] sm:text-[2.6rem] lg:text-[3rem]">
+        Let’s Create Something Exceptional.
+      </h2>
+      <span class="mt-7 block h-[2px] w-14 bg-accent" aria-hidden="true"></span>
+      <p class="mt-7 max-w-md text-[1.0625rem] leading-relaxed text-ink/85">
+        Planning an event, production, or creative lighting installation? Let’s discuss how I can contribute.
+      </p>
+
+      <ul class="mt-10 space-y-4 text-[0.9375rem]">
+        <li>
+          <a href={`mailto:${SITE.email}`} class="group inline-flex items-center gap-4 text-ink/90 hover:text-accent-soft">
+            <Icon name="mail" class="h-5 w-5 text-muted group-hover:text-accent-soft" />
+            {SITE.email}
+          </a>
+        </li>
+        <li>
+          <a href={SITE.phoneHref} class="group inline-flex items-center gap-4 text-ink/90 hover:text-accent-soft">
+            <Icon name="phone" class="h-5 w-5 text-muted group-hover:text-accent-soft" />
+            {SITE.phone}
+          </a>
+        </li>
+        <li class="inline-flex items-center gap-4 text-ink/90">
+          <Icon name="pin" class="h-5 w-5 text-muted" />
+          {SITE.locality}, {SITE.region} · Serving the Northeast
+        </li>
+      </ul>
+    </div>
+
+    <form
+      class="contact-form rounded-[4px] border border-line bg-surface/85 p-6 backdrop-blur-sm sm:p-9"
+      method="post"
+      action={endpoint || `mailto:${SITE.email}`}
+      enctype={endpoint ? undefined : 'text/plain'}
+      data-endpoint={endpoint}
+      data-email={SITE.email}
+      data-reveal
+      style="--reveal-delay: 120ms"
+    >
+      {accessKey && <input type="hidden" name="access_key" value={accessKey} />}
+      <input type="hidden" name="subject" value="New enquiry from djneventproductions.com" />
+      <input type="hidden" name="from_name" value="DJN Event Productions website" />
+      <!-- Spam trap: real visitors never see or fill this. -->
+      <div class="hidden" aria-hidden="true">
+        <label>Leave this empty <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" /></label>
+      </div>
+
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label for="cf-name" class="field-label">Name</label>
+          <input id="cf-name" name="name" class="field" type="text" autocomplete="name" required />
+        </div>
+        <div>
+          <label for="cf-email" class="field-label">Email</label>
+          <input id="cf-email" name="email" class="field" type="email" autocomplete="email" required />
+        </div>
+        <div>
+          <label for="cf-company" class="field-label">Company / Organization <span class="normal-case tracking-normal text-faint">(optional)</span></label>
+          <input id="cf-company" name="company" class="field" type="text" autocomplete="organization" />
+        </div>
+        <div>
+          <label for="cf-type" class="field-label">Project or event type</label>
+          <select id="cf-type" name="project_type" class="field" required>
+            <option value="" disabled selected>Select…</option>
+            {PROJECT_TYPES.map((t) => <option value={t}>{t}</option>)}
+          </select>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="cf-message" class="field-label">Message</label>
+          <textarea
+            id="cf-message"
+            name="message"
+            class="field min-h-36 resize-y"
+            rows="5"
+            required
+            placeholder="Dates, venue, scope, and how you’d like me to be involved."></textarea>
+        </div>
+      </div>
+
+      <div class="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <button type="submit" class="btn btn-primary w-full sm:w-auto" data-submit>
+          <span data-submit-label>Send Message</span>
+          <Icon name="arrow" />
+        </button>
+        <p class="text-xs text-faint">Replies come directly from Nick.</p>
+      </div>
+      <p class="form-status mt-5 text-sm" role="status" aria-live="polite" data-status></p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .contact::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(to right, rgb(11 11 15 / 0.96) 25%, rgb(11 11 15 / 0.82) 100%),
+      linear-gradient(to bottom, var(--color-bg) 0%, rgb(11 11 15 / 0) 30%, rgb(11 11 15 / 0) 70%, var(--color-bg) 100%),
+      var(--contact-bg) center 35% / cover no-repeat;
+  }
+  .form-status:empty {
+    display: none;
+  }
+  .form-status[data-state='ok'] {
+    color: #86efac;
+  }
+  .form-status[data-state='error'] {
+    color: #fca5a5;
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.contact-form');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const label = form.querySelector<HTMLElement>('[data-submit-label]')!;
+    const endpoint = form.dataset.endpoint;
+    const email = form.dataset.email!;
+
+    const setStatus = (msg: string, state: 'ok' | 'error' | '' = '') => {
+      status.textContent = msg;
+      status.dataset.state = state;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = new FormData(form);
+      if (data.get('botcheck')) return;
+
+      // No delivery service configured: open the visitor's email client with
+      // the enquiry pre-filled.
+      if (!endpoint) {
+        const body = [
+          `Name: ${data.get('name')}`,
+          `Email: ${data.get('email')}`,
+          `Company / Organization: ${data.get('company') || '—'}`,
+          `Project type: ${data.get('project_type')}`,
+          '',
+          String(data.get('message')),
+        ].join('\n');
+        const subject = `Enquiry: ${data.get('project_type')} — ${data.get('name')}`;
+        window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        setStatus(`Your email app should open with the message ready to send. If it doesn’t, email ${email} directly.`);
+        return;
+      }
+
+      submit.disabled = true;
+      label.textContent = 'Sending…';
+      setStatus('');
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify(Object.fromEntries(data)),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        setStatus('Thank you — your message has been sent. Nick will be in touch shortly.', 'ok');
+      } catch {
+        setStatus(`Sorry, the message couldn’t be sent. Please email ${email} directly.`, 'error');
+      } finally {
+        submit.disabled = false;
+        label.textContent = 'Send Message';
+      }
+    });
+  }
+</script>

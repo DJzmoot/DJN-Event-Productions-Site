@@ -1,0 +1,155 @@
+---
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../lib/site';
+import defaultOg from '../assets/photos/relay-liu-arch-stage.jpg';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Image used for Open Graph / Twitter cards. */
+  image?: ImageMetadata;
+  imageAlt?: string;
+  /** Nav id to mark as current. */
+  current?: string;
+  /** Additional JSON-LD objects for this page. */
+  schema?: Record<string, unknown>[];
+  type?: 'website' | 'article';
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = SITE.description,
+  image = defaultOg,
+  imageAlt = 'Stage lighting by DJN Event Productions',
+  current,
+  schema = [],
+  type = 'website',
+  noindex = false,
+} = Astro.props;
+
+const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} | ${SITE.owner} — Lighting Design & Technical Direction`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const og = await getImage({ src: image, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 82 });
+const ogUrl = new URL(og.src, Astro.site).href;
+
+const business = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${SITE.url}/#business`,
+  name: SITE.name,
+  url: SITE.url,
+  image: ogUrl,
+  description: SITE.description,
+  email: SITE.email,
+  telephone: '+1-516-578-0551',
+  foundingDate: String(SITE.since),
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: SITE.locality,
+    addressRegion: SITE.region,
+    addressCountry: 'US',
+  },
+  areaServed: [
+    { '@type': 'Place', name: 'Northeastern United States' },
+    { '@type': 'State', name: 'New York' },
+  ],
+  knowsAbout: [
+    'Lighting design',
+    'Lighting programming',
+    'Technical direction',
+    'Show programming',
+    'Live event operation',
+    'Video and projection',
+    'Audio systems',
+    'Architectural lighting',
+    'Animated holiday light shows',
+    'DJ services',
+  ],
+  founder: { '@id': `${SITE.url}/#nick` },
+};
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${SITE.url}/#nick`,
+  name: SITE.owner,
+  jobTitle: 'Lighting Designer & Technical Director',
+  worksFor: { '@id': `${SITE.url}/#business` },
+  url: `${SITE.url}/#about`,
+};
+const jsonLd = [business, person, ...schema];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#0B0B0F" />
+    <meta name="author" content={SITE.owner} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only z-[100] bg-accent px-4 py-3 text-sm font-bold text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+      >Skip to content</a
+    >
+    <Header current={current} />
+    <main id="main" tabindex="-1" class="outline-none">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Gentle reveal-on-scroll for elements marked [data-reveal].
+      const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+        );
+        els.forEach((el) => io.observe(el));
+      } else {
+        els.forEach((el) => el.classList.add('is-visible'));
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../Icon.astro';
+import nick from '../../assets/photos/nick-manganiello-production.jpg';
+import { SITE } from '../../lib/site';
+---
+
+<section id="about" class="border-t border-line py-16 md:py-24" aria-labelledby="about-title">
+  <div class="container-x grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:items-stretch lg:gap-16">
+    <figure class="zoom-frame min-h-0 rounded-[4px] border border-line lg:h-full" data-reveal>
+      <Image
+        src={nick}
+        alt="Black-and-white photograph of Nick Manganiello at a production position, chin resting on his hand, focused on the show, with a laptop and road cases in front of him."
+        widths={[480, 768, 1086]}
+        sizes="(min-width: 1024px) 45vw, 100vw"
+        class="aspect-[3/2] h-full w-full object-cover object-[60%_50%] grayscale lg:aspect-auto"
+      />
+    </figure>
+
+    <div data-reveal style="--reveal-delay: 120ms">
+      <h2 id="about-title" class="section-title">About Nick</h2>
+      <div class="prose-body mt-7 max-w-[38rem]">
+        <p>
+          <strong>Nick Manganiello</strong> is the founder and sole operator of <strong>DJN Event Productions</strong>, an
+          independent technical production practice specializing in lighting design, technical direction, show
+          programming, and live event operation.
+        </p>
+        <p>
+          With a career spanning back to {SITE.since}, Nick combines creative design with hands-on technical expertise,
+          collaborating with event production companies, agencies, venues, and industry professionals throughout the
+          Northeastern United States.
+        </p>
+        <p>
+          His work spans corporate productions, live entertainment, immersive environments, architectural lighting, and
+          synchronized seasonal installations.
+        </p>
+      </div>
+
+      <dl class="mt-9 grid grid-cols-1 border-t border-line sm:grid-cols-3">
+        <div class="about-fact">
+          <Icon name="calendar" class="h-7 w-7 shrink-0 text-ink/80" />
+          <div>
+            <dt class="sr-only">Experience</dt>
+            <dd>Live events<br class="hidden sm:block" /> since {SITE.since}</dd>
+          </div>
+        </div>
+        <div class="about-fact">
+          <Icon name="network" class="h-7 w-7 shrink-0 text-ink/80" />
+          <div>
+            <dt class="sr-only">Disciplines</dt>
+            <dd>Lighting · Production<br class="hidden sm:block" /> · Events · DJ</dd>
+          </div>
+        </div>
+        <div class="about-fact">
+          <Icon name="pin" class="h-7 w-7 shrink-0 text-ink/80" />
+          <div>
+            <dt class="sr-only">Service area</dt>
+            <dd>Northeastern<br class="hidden sm:block" /> United States</dd>
+          </div>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-fact {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1.1rem 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-line);
+  }
+  @media (min-width: 640px) {
+    .about-fact {
+      padding: 1.25rem 1.25rem 0.25rem;
+      border-bottom: 0;
+    }
+    .about-fact:first-child {
+      padding-left: 0;
+    }
+    .about-fact + .about-fact {
+      border-left: 1px solid var(--color-line-strong);
+    }
+  }
+</style>

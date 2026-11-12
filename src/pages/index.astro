@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/home/Hero.astro';
+import WorkCarousel from '../components/home/WorkCarousel.astro';
+import Expertise from '../components/home/Expertise.astro';
+import About from '../components/home/About.astro';
+import Collaboration from '../components/home/Collaboration.astro';
+import Contact from '../components/home/Contact.astro';
+import { getProjects } from '../lib/projects';
+
+const featured = (await getProjects()).filter((p) => p.data.featured);
+---
+
+<Base current="top">
+  <Hero />
+  <WorkCarousel projects={featured} />
+  <Expertise />
+  <About />
+  <Collaboration />
+  <Contact />
+</Base>
