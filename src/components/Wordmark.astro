@@ -6,9 +6,18 @@ const { class: cls = '' } = Astro.props;
 ---
 
 <span class:list={['wordmark inline-flex items-center gap-4 sm:gap-5', cls]}>
-  <span class="text-[1.65rem] leading-none font-extrabold tracking-[0.28em] sm:text-[1.9rem]">DJN</span>
+  <span class="djn text-[1.85rem] leading-none font-extrabold tracking-[0.04em] sm:text-[2.1rem]">DJN</span>
   <span class="h-9 w-[2px] bg-accent" aria-hidden="true"></span>
   <span class="text-[0.68rem] leading-[1.35] font-bold tracking-[0.24em] uppercase sm:text-[0.75rem]">
     Event<br />Productions
   </span>
 </span>
+
+<style>
+  /* Manrope tops out at weight 800; a hairline stroke in the same colour
+     gives the letters extra heft without changing the typeface. */
+  .djn {
+    -webkit-text-stroke: 0.04em currentColor;
+    paint-order: stroke fill;
+  }
+</style>
