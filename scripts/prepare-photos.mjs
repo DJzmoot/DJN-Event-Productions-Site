@@ -48,6 +48,10 @@ const PHOTOS = {
   'line-arrays-barge.jpeg': 'huntington-lighthouse-line-arrays.jpg',
   'power-distro.jpeg': 'huntington-lighthouse-power.jpg',
   'dock-load-in.jpeg': 'huntington-lighthouse-load-in.jpg',
+  // Suffolk Theater, Riverhead NY — concert lighting (2023–2026)
+  '863029C7-A3B8-4B04-8E2D-0723CE66C11F_1_102_a.jpeg': 'suffolk-theater-concert.jpg',
+  '7A08C83B-E68E-40DB-995A-FB6C008501E7_1_102_o.jpeg': 'suffolk-theater-beams.jpg',
+  '71005C35-6450-4DFD-89CE-6213A94DA215_1_105_c.jpeg': 'suffolk-theater-orchestra.jpg',
   // Nick at a production position
   'C81DC429-8502-48E6-B4DC-5B024911CCBB_1_105_c.jpeg': 'nick-manganiello-production.jpg',
 };
