@@ -2,6 +2,8 @@
 import { Picture } from 'astro:assets';
 import Icon from '../Icon.astro';
 import heroImage from '../../assets/photos/relay-liu-arch-stage.jpg';
+
+const disciplines = ['Lighting Design', 'Technical Direction', 'Show Programming', 'Live Event Operation'];
 ---
 
 <section id="top" class="hero relative isolate overflow-hidden" aria-labelledby="hero-title">
@@ -18,8 +20,8 @@ import heroImage from '../../assets/photos/relay-liu-arch-stage.jpg';
     />
   </div>
 
-  <div class="container-x relative flex min-h-[inherit] items-end pt-[calc(var(--header-h)+2.5rem)] pb-10 lg:items-center lg:pb-12">
-    <div class="hero-enter max-w-[46rem]">
+  <div class="hero-inner container-x relative flex items-end">
+    <div class="hero-enter w-full max-w-[60rem]">
       <p class="label flex items-center gap-5 text-[0.8125rem] tracking-[0.3em]">
         Nick Manganiello
         <span class="h-[2px] w-12 bg-accent" aria-hidden="true"></span>
@@ -27,16 +29,25 @@ import heroImage from '../../assets/photos/relay-liu-arch-stage.jpg';
       <h1 id="hero-title" class="display mt-6 text-[2.3rem] sm:text-[3rem] lg:text-[3.1rem] xl:text-[3.5rem]">
         Creative Vision.<br />Technical Precision.
       </h1>
-      <p class="label mt-7 max-w-[34rem] leading-[1.9] text-ink/90">
-        Lighting Design <span class="text-accent-soft" aria-hidden="true">/</span> Technical Direction
-        <span class="text-accent-soft" aria-hidden="true">/</span> Show Programming
-        <span class="text-accent-soft" aria-hidden="true">/</span> Live Event Operation
+      <p class="label mt-6 flex flex-wrap leading-[1.9] text-ink/90">
+        {
+          disciplines.map((d, i) => (
+            <span class="whitespace-nowrap">
+              {d}
+              {i < disciplines.length - 1 && (
+                <span class="mx-2 text-accent-soft" aria-hidden="true">
+                  /
+                </span>
+              )}
+            </span>
+          ))
+        }
       </p>
-      <p class="mt-6 max-w-[31rem] text-[1.0625rem] leading-relaxed text-ink/80">
+      <p class="mt-5 max-w-[40rem] text-[1.0625rem] leading-relaxed text-balance text-ink/80">
         Independent technical production expertise for live events, immersive environments, and creative
         installations throughout the Northeastern United States.
       </p>
-      <div class="mt-9 flex flex-wrap gap-4">
+      <div class="mt-8 flex flex-wrap gap-4">
         <a href="#work" class="btn btn-primary">View Selected Work <Icon name="arrow" /></a>
         <a href="#about" class="btn btn-outline">About Nick</a>
       </div>
@@ -45,8 +56,14 @@ import heroImage from '../../assets/photos/relay-liu-arch-stage.jpg';
 </section>
 
 <style>
+  /* Mobile/tablet: content-led height, text sits at the bottom of the frame. */
   .hero {
-    min-height: clamp(560px, 82svh, 780px);
+    min-height: clamp(540px, 80svh, 700px);
+  }
+  .hero-inner {
+    min-height: inherit;
+    padding-top: calc(var(--header-h) + 2.5rem);
+    padding-bottom: 2.5rem;
   }
   .hero-media::after {
     content: '';
@@ -60,21 +77,30 @@ import heroImage from '../../assets/photos/relay-liu-arch-stage.jpg';
     object-position: 60% 50%;
   }
 
-  /* Desktop: full-bleed photo; darkened behind the text column only. */
+  /* Desktop: a 560px stage below the fixed nav. Full-bleed photo, darkened
+     behind the text column only. Gradient stops are measured from the left
+     edge of the content grid, so the text stays on the dark side at any width. */
   @media (min-width: 1024px) {
+    .hero {
+      --content-left: max(var(--gutter), calc(50% - 680px));
+      min-height: calc(var(--header-h) + 560px);
+    }
+    .hero-inner {
+      align-items: center;
+      padding-top: var(--header-h);
+      padding-bottom: 1.5rem; /* optically lifts the block above centre */
+    }
     .hero-media::after {
       background:
         linear-gradient(
           to right,
-          /* Stops track the centred 1320px content column, so the text
-             always sits on the dark side whatever the viewport width. */
-          rgb(11 11 15 / 0.95) 0%,
-          rgb(11 11 15 / 0.9) calc(50% + 20px),
-          rgb(11 11 15 / 0.5) calc(50% + 200px),
-          rgb(11 11 15 / 0) calc(50% + 440px)
+          rgb(11 11 15 / 0.94) 0%,
+          rgb(11 11 15 / 0.88) calc(var(--content-left) + 720px),
+          rgb(11 11 15 / 0.45) calc(var(--content-left) + 940px),
+          rgb(11 11 15 / 0) calc(var(--content-left) + 1160px)
         ),
-        linear-gradient(to top, var(--color-bg) 0%, rgb(11 11 15 / 0) 24%),
-        linear-gradient(to bottom, rgb(11 11 15 / 0.6) 0%, rgb(11 11 15 / 0) 20%);
+        linear-gradient(to top, var(--color-bg) 0%, rgb(11 11 15 / 0) 22%),
+        linear-gradient(to bottom, rgb(11 11 15 / 0.6) 0%, rgb(11 11 15 / 0) 22%);
     }
     .hero-media :global(img) {
       object-position: 50% 58%;
