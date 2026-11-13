@@ -22,10 +22,16 @@ const d = project.data;
 const { Content } = await render(project);
 const related = relatedProjects(project, all);
 
-// Full-size versions for the lightbox.
-const gallery = await Promise.all(
-  d.gallery.map(async (g) => ({
+// Editorial story: the cover (uncropped this time) followed by the gallery,
+// each with a full-size version for the lightbox.
+const storySources = [
+  ...(d.cover && !d.placeholder ? [{ src: d.cover.src, alt: d.cover.alt, credit: undefined as string | undefined }] : []),
+  ...d.gallery.map((g) => ({ src: g.src, alt: g.alt, credit: g.credit })),
+];
+const story = await Promise.all(
+  storySources.map(async (g) => ({
     ...g,
+    portrait: g.src.height > g.src.width,
     full: await getImage({ src: g.src, width: Math.min(g.src.width, 2400), format: 'webp', quality: 80 }),
   })),
 );
@@ -118,152 +124,154 @@ const schema = [
       </div>
     </header>
 
-    <!-- Meta strip -->
-    <div class="border-y border-line bg-surface/60">
-      <dl class="container-x grid grid-cols-2 gap-x-8 gap-y-5 py-7 md:flex md:flex-wrap md:gap-x-14">
-        {
-          meta.map((m) => (
-            <div>
-              <dt class="label text-[0.625rem] text-faint">{m.label}</dt>
-              <dd class="mt-1.5 text-[0.9375rem] font-semibold">{m.value}</dd>
-            </div>
-          ))
-        }
-      </dl>
-    </div>
+    <!-- Editorial story: sticky facts (left) beside overview and photographs (right) -->
+    <div class="story-layout container-x py-12 md:py-16 lg:py-20">
+      <aside class="story-facts" aria-label="Project details">
+        <div data-reveal>
+          <p class="label flex items-center gap-3 text-[0.6875rem] text-accent-soft">
+            <span class="h-2.5 w-2.5 bg-accent" aria-hidden="true"></span>
+            {d.eyebrow ?? categoryLabel(d.categories[0])}
+          </p>
+          <p class="mt-3 text-[1.5rem] leading-tight font-bold">{d.title}</p>
 
-    <!-- Overview / role / scope -->
-    <div class="container-x grid gap-12 py-12 md:py-16 lg:grid-cols-[1.3fr_1fr] lg:gap-20">
-      <section aria-labelledby="overview-title" data-reveal>
-        <h2 id="overview-title" class="section-title">Overview</h2>
-        <div class="prose-body mt-7 max-w-[40rem]">
-          <Content />
+          <dl class="mt-7 grid grid-cols-2 gap-x-6 gap-y-5 border-y border-line py-6">
+            {
+              meta.map((m) => (
+                <div class:list={[m.label === 'Category' && 'col-span-2']}>
+                  <dt class="label text-[0.625rem] text-faint">{m.label}</dt>
+                  <dd class="mt-1.5 text-[0.9375rem] leading-snug font-semibold">{m.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+
+          <section aria-labelledby="role-title" class="mt-7 border-l-2 border-accent pl-5">
+            <h2 id="role-title" class="label text-[0.6875rem] text-accent-soft">Nick’s role</h2>
+            <p class="mt-2.5 text-[1rem] leading-relaxed text-ink">{d.role}</p>
+          </section>
+
+          {
+            d.scope.length > 0 && (
+              <section aria-labelledby="scope-title" class="mt-7">
+                <h2 id="scope-title" class="label text-[0.6875rem] text-faint">Technical scope</h2>
+                <ul class="mt-3.5 space-y-2.5">
+                  {d.scope.map((s) => (
+                    <li class="flex items-start gap-3 text-[0.875rem] leading-snug text-ink/90">
+                      <Icon name="check" class="mt-px h-4 w-4 shrink-0 text-accent-soft" />
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+
+          {
+            d.equipment && d.equipment.length > 0 && (
+              <section aria-labelledby="equipment-title" class="mt-7">
+                <h2 id="equipment-title" class="label text-[0.6875rem] text-faint">Technologies &amp; equipment</h2>
+                <ul class="mt-3.5 flex flex-wrap gap-2">
+                  {d.equipment.map((e) => (
+                    <li class="border border-line-strong px-3 py-1.5 text-[0.8125rem] text-muted">{e}</li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
         </div>
-      </section>
-
-      <aside class="space-y-10" data-reveal style="--reveal-delay: 100ms">
-        <section aria-labelledby="role-title" class="border-l-2 border-accent pl-6">
-          <h2 id="role-title" class="label text-accent-soft">Nick’s role</h2>
-          <p class="mt-3 text-[1.0625rem] leading-relaxed text-ink">{d.role}</p>
-        </section>
-
-        {
-          d.scope.length > 0 && (
-            <section aria-labelledby="scope-title">
-              <h2 id="scope-title" class="label text-faint">Technical scope</h2>
-              <ul class="mt-4 space-y-3">
-                {d.scope.map((s) => (
-                  <li class="flex items-start gap-3 text-[0.9375rem] text-ink/90">
-                    <Icon name="check" class="mt-0.5 h-5 w-5 shrink-0 text-accent-soft" />
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )
-        }
-
-        {
-          d.equipment && d.equipment.length > 0 && (
-            <section aria-labelledby="equipment-title">
-              <h2 id="equipment-title" class="label text-faint">Technologies &amp; equipment</h2>
-              <ul class="mt-4 flex flex-wrap gap-2">
-                {d.equipment.map((e) => (
-                  <li class="border border-line-strong px-3 py-1.5 text-[0.8125rem] text-muted">{e}</li>
-                ))}
-              </ul>
-            </section>
-          )
-        }
       </aside>
-    </div>
 
-    <!-- Video / animated media -->
-    {
-      (d.videoEmbed || d.media.length > 0) && (
-        <section class="container-x pb-12 md:pb-16" aria-label="Video and motion">
-          <div class="grid gap-8">
-            {d.videoEmbed && (
-              <div class="aspect-video overflow-hidden rounded-[4px] border border-line bg-surface">
-                <iframe
-                  src={d.videoEmbed}
-                  title={`${d.title} — video`}
-                  class="h-full w-full"
-                  loading="lazy"
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowfullscreen
-                />
-              </div>
-            )}
-            {d.media.map((m) =>
-              m.kind === 'video' ? (
-                <video
-                  class="w-full rounded-[4px] border border-line"
-                  src={m.src}
-                  poster={m.poster}
-                  width={m.width}
-                  height={m.height}
-                  controls
-                  preload="none"
-                  playsinline
-                  aria-label={m.alt}
-                />
-              ) : (
-                <figure data-reveal>
-                  <picture>
-                    {still && <source media="(prefers-reduced-motion: reduce)" srcset={still.src} />}
-                    <img
-                    src={m.src}
-                    alt={m.alt}
-                    width={m.width}
-                    height={m.height}
-                    loading="lazy"
-                    decoding="async"
-                    class="w-full rounded-[4px] border border-line"
-                  />
-                  </picture>
-                </figure>
-              ),
-            )}
+      <div class="story-main">
+        <section aria-labelledby="overview-title" data-reveal>
+          <h2 id="overview-title" class="section-title">Overview</h2>
+          <div class="prose-body mt-6 max-w-[42rem]">
+            <Content />
           </div>
         </section>
-      )
-    }
 
-    <!-- Gallery -->
-    {
-      gallery.length > 0 && (
-        <section class="container-x pb-14 md:pb-20" aria-labelledby="gallery-title">
-          <h2 id="gallery-title" class="section-title" data-reveal>
-            Gallery
-          </h2>
-          <ul class="gallery mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {gallery.map((g, i) => (
-              <li class:list={[g.wide && 'sm:col-span-2']} data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}>
-                <button
-                  type="button"
-                  class="zoom-frame block h-full w-full cursor-zoom-in rounded-[4px] border border-line bg-surface"
-                  data-lightbox={i}
-                  data-full={g.full.src}
-                  data-alt={g.alt}
-                  data-credit={g.credit ?? d.photoCredit ?? ''}
-                  aria-label={`View larger: ${g.alt}`}
-                >
-                  <Image
-                    src={g.src}
-                    alt=""
-                    widths={[480, 768, 1080, 1440]}
-                    sizes={g.wide ? '(min-width: 1024px) 66vw, 100vw' : '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'}
-                    class="h-full max-h-[34rem] w-full object-cover"
+        {
+          d.placeholder && (
+            <div class="placeholder-media mt-12 flex aspect-[4/3] items-center justify-center rounded-[4px] border border-line">
+              <p class="label relative text-faint">Project photography coming soon</p>
+            </div>
+          )
+        }
+
+        {
+          story.length > 0 && (
+            <ul class="story-images mt-12 md:mt-16" aria-label="Photographs">
+              {story.map((g, i) => (
+                <li>
+                  <button
+                    type="button"
+                    class="story-figure zoom-frame block w-full cursor-zoom-in rounded-[4px] border border-line bg-surface"
+                    style={g.portrait ? `max-width:min(100%, calc(85vh * ${g.src.width} / ${g.src.height}))` : undefined}
+                    data-reveal-img
+                    data-lightbox={i}
+                    data-full={g.full.src}
+                    data-alt={g.alt}
+                    data-credit={g.credit ?? d.photoCredit ?? ''}
+                    aria-label={`View larger: ${g.alt}`}
+                  >
+                    <Image
+                      src={g.src}
+                      alt=""
+                      widths={[480, 768, 1080, 1440, 1920]}
+                      sizes="(min-width: 1024px) 60vw, 100vw"
+                      loading={i === 0 ? 'eager' : 'lazy'}
+                      class="block h-auto w-full"
+                    />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+
+        {
+          (d.videoEmbed || d.media.length > 0) && (
+            <div class="mt-6 grid gap-6 md:mt-8 md:gap-8" aria-label="Video and motion">
+              {d.videoEmbed && (
+                <div class="aspect-video overflow-hidden rounded-[4px] border border-line bg-surface" data-reveal-img>
+                  <iframe
+                    src={d.videoEmbed}
+                    title={`${d.title} — video`}
+                    class="h-full w-full"
+                    loading="lazy"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowfullscreen
                   />
-                </button>
-              </li>
-            ))}
-          </ul>
-          {d.photoCredit && <p class="mt-6 text-xs text-faint">Photography: {d.photoCredit}</p>}
-        </section>
-      )
-    }
+                </div>
+              )}
+              {d.media.map((m) =>
+                m.kind === 'video' ? (
+                  <video
+                    class="w-full rounded-[4px] border border-line"
+                    src={m.src}
+                    poster={m.poster}
+                    width={m.width}
+                    height={m.height}
+                    controls
+                    preload="none"
+                    playsinline
+                    aria-label={m.alt}
+                  />
+                ) : (
+                  <figure class="overflow-hidden rounded-[4px] border border-line" data-reveal-img>
+                    <picture>
+                      {still && <source media="(prefers-reduced-motion: reduce)" srcset={still.src} />}
+                      <img src={m.src} alt={m.alt} width={m.width} height={m.height} loading="lazy" decoding="async" class="block w-full" />
+                    </picture>
+                  </figure>
+                ),
+              )}
+            </div>
+          )
+        }
+
+        {d.photoCredit && <p class="mt-6 text-xs text-faint">Photography: {d.photoCredit}</p>}
+      </div>
+    </div>
 
     <!-- Related -->
     {
@@ -279,9 +287,9 @@ const schema = [
               </a>
             </div>
             <ul class="mt-10 grid gap-x-8 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
-              {related.map((p) => (
+              {related.map((p, i) => (
                 <li>
-                  <ProjectCard project={p} />
+                  <ProjectCard project={p} index={i} />
                 </li>
               ))}
             </ul>
@@ -320,11 +328,35 @@ const schema = [
     background:
       linear-gradient(to top, var(--color-bg) 0%, rgb(11 11 15 / 0.7) 35%, rgb(11 11 15 / 0.15) 70%, rgb(11 11 15 / 0.55) 100%);
   }
-  .gallery :global(img) {
-    aspect-ratio: 4 / 3;
+  /* Editorial layout. Mobile: facts, then overview and photographs.
+     Desktop: facts in a narrow column that sticks below the header while
+     the photographs scroll past; it stops naturally where the story ends. */
+  .story-layout {
+    display: grid;
+    gap: 3rem;
   }
-  .gallery li[class*='col-span-2'] :global(img) {
-    aspect-ratio: 16 / 8;
+  .story-images {
+    display: grid;
+    gap: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .story-images {
+      gap: 2rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .story-layout {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      gap: clamp(3rem, 5vw, 6rem);
+      align-items: start;
+    }
+  }
+  /* Only stick when the facts comfortably fit the viewport height. */
+  @media (min-width: 1024px) and (min-height: 700px) {
+    .story-facts {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
   }
   .lightbox {
     width: 100vw;

@@ -57,6 +57,12 @@ layout shift and no animation library. All of it is off under
 | `.hero-enter` | page-load headline cue, staggered after the light comes up |
 | `.stage` (on a positioned photo wrapper) | lighting cue: photo comes up from reduced brightness over 1.2s |
 | `.kenburns` (on the photo) | 20s centred push-in from 1 to 1.08 (`--kenburns-scale`, `--kenburns-time`) |
+| `data-reveal-img` | rectangular mask reveal for a photo (bottom to top, or `data-reveal-from="left"`) with a 1.04 to 1 settle; `--i` staggers |
+| page transitions | native cross-document view transitions: the outgoing page dims onto the near-black stage and the incoming page rises and unmasks; the header holds still |
+
+Case-study pages (`src/pages/work/[slug].astro`) use an editorial layout: the
+project facts stick in a narrow left column (desktops at least 700px tall) while
+the overview and full-width photographs scroll on the right. On mobile it stacks.
 
 ## Adding a project
 

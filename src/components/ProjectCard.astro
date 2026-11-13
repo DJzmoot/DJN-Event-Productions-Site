@@ -8,24 +8,22 @@ interface Props {
   project: Project;
   eager?: boolean;
   headingLevel?: 'h2' | 'h3';
+  /** Position in a row, used to stagger the image reveal. */
+  index?: number;
 }
-const { project, eager = false, headingLevel: H = 'h3' } = Astro.props;
+const { project, eager = false, headingLevel: H = 'h3', index = 0 } = Astro.props;
 const d = project.data;
 ---
 
-<a
-  href={`/work/${project.id}/`}
-  class="project-card group block"
-  data-categories={d.categories.join(' ')}
->
-  <div class="zoom-frame relative aspect-[4/3] rounded-[4px] border border-line bg-surface">
+<a href={`/work/${project.id}/`} class="project-card group block" data-categories={d.categories.join(' ')}>
+  <div class="card-media zoom-frame relative aspect-[4/3] rounded-[4px] border border-line bg-surface" data-reveal-img style={`--i:${index}`}>
     {
       d.cover && !d.placeholder ? (
         <Image
           src={d.cover.src}
           alt={d.cover.alt}
           widths={[480, 768, 1080]}
-          sizes="(min-width: 1280px) 400px, (min-width: 768px) 45vw, 100vw"
+          sizes="(min-width: 1280px) 440px, (min-width: 768px) 45vw, 100vw"
           loading={eager ? 'eager' : 'lazy'}
           class="h-full w-full object-cover"
           style={`object-position:${d.cover.position}`}
@@ -36,12 +34,21 @@ const d = project.data;
         </div>
       )
     }
+    {
+      d.services.length > 0 && (
+        <div class="card-detail" aria-hidden="true">
+          <p class="label text-[0.625rem] text-ink/90">{d.services.join('  /  ')}</p>
+        </div>
+      )
+    }
   </div>
   <div class="mt-5">
     <p class="label text-[0.6875rem] text-accent-soft">{categoryLabel(d.categories[0])}</p>
-    <H class="mt-2 flex items-start justify-between gap-4 text-[1.25rem] leading-snug font-bold transition-colors group-hover:text-accent-soft">
-      {d.title}
-      <Icon name="arrow" class="mt-1.5 h-4 w-4 shrink-0 text-faint transition-transform duration-300 group-hover:translate-x-1 group-hover:text-accent-soft" />
+    <H class="mt-2 flex items-start justify-between gap-4 text-[1.25rem] leading-snug font-bold">
+      <span class="card-title">{d.title}</span>
+      <span class="card-arrow mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-line-strong">
+        <Icon name="arrow" class="h-3.5 w-3.5" />
+      </span>
     </H>
     <p class="mt-2 text-[0.9375rem] leading-relaxed text-muted">{d.summary}</p>
     {
@@ -51,3 +58,74 @@ const d = project.data;
     }
   </div>
 </a>
+
+<style>
+  /* Whole card is one link. Hover and keyboard focus share the same cues:
+     a slow photographic push-in, services sliding up over the image, an
+     underline drawing under the title and the arrow stepping forward. */
+  .project-card {
+    border-radius: 4px;
+    outline-offset: 6px;
+  }
+  .project-card:hover .card-media :global(img),
+  .project-card:focus-visible .card-media :global(img) {
+    transform: scale(1.035);
+  }
+
+  .card-detail {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 2.5rem 1.1rem 1rem;
+    background: linear-gradient(to top, rgb(11 11 15 / 0.85), rgb(11 11 15 / 0));
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 350ms var(--ease-cue),
+      transform 400ms var(--ease-out-expo);
+  }
+  .project-card:hover .card-detail,
+  .project-card:focus-visible .card-detail {
+    opacity: 1;
+    transform: none;
+  }
+  /* Touch screens have no hover: keep the detail visible. */
+  @media (hover: none) {
+    .card-detail {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .card-title {
+    background: linear-gradient(var(--color-accent-soft), var(--color-accent-soft)) 0 100% / 0% 1px no-repeat;
+    transition:
+      background-size 400ms var(--ease-out-expo),
+      color 300ms ease;
+  }
+  .project-card:hover .card-title,
+  .project-card:focus-visible .card-title {
+    background-size: 100% 1px;
+    color: #fff;
+  }
+
+  .card-arrow {
+    color: var(--color-faint);
+    transition:
+      color 300ms ease,
+      border-color 300ms ease,
+      background-color 300ms ease;
+  }
+  .card-arrow :global(svg) {
+    transition: transform 380ms var(--ease-out-expo);
+  }
+  .project-card:hover .card-arrow,
+  .project-card:focus-visible .card-arrow {
+    color: #fff;
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+  }
+  .project-card:hover .card-arrow :global(svg),
+  .project-card:focus-visible .card-arrow :global(svg) {
+    transform: translateX(2px);
+  }
+</style>

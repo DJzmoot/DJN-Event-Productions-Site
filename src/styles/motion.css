@@ -13,6 +13,13 @@
   .stage                      page-load lighting cue: photo comes up from
                               reduced brightness
   .kenburns                   slow push-in on a hero photo (plays once)
+  data-reveal-img             rectangular mask reveal for photographs
+                              (bottom→top; data-reveal-from="left" for
+                              left→right) with a 1.04→1 settle on the <img>
+  page transitions            native cross-document view transitions:
+                              outgoing page dims to the near-black stage,
+                              incoming page rises and unmasks; the header
+                              stays put
 
   Content is hidden only when the `.js` class is present (set inline in
   <head>), so everything stays visible without JavaScript. Every rule here
@@ -28,6 +35,10 @@
   --ease-cue: cubic-bezier(0.22, 0.61, 0.36, 1);
   --kenburns-scale: 1.08; /* end zoom of the hero push-in */
   --kenburns-time: 20s; /* duration of the push-in (plays once) */
+  --cue-mask: 850ms; /* image mask reveal */
+  --ease-mask: cubic-bezier(0.22, 1, 0.36, 1);
+  --cue-page-out: 220ms; /* page transition: outgoing page */
+  --cue-page-in: 480ms; /* page transition: incoming page */
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -109,6 +120,79 @@
     /* Gentle ease-out: visibly moving from the first second, settling at the end. */
     animation: kenburns var(--kenburns-time) cubic-bezier(0.3, 0.3, 0.5, 1) both;
     will-change: transform;
+  }
+}
+
+/* ---- Image mask reveal ------------------------------------------- */
+/* The settle uses the individual `scale` property so it composes with the
+   hover zoom (which uses `transform`) instead of fighting it. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal-img] {
+    --mask-delay: calc(var(--reveal-delay, 0ms) + var(--i, 0) * 110ms);
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path var(--cue-mask) var(--ease-mask) var(--mask-delay);
+  }
+  .js [data-reveal-img][data-reveal-from='left'] {
+    clip-path: inset(0 100% 0 0);
+  }
+  .js [data-reveal-img] img {
+    scale: 1.04;
+    transition:
+      scale calc(var(--cue-mask) + 250ms) var(--ease-mask) var(--mask-delay),
+      transform 450ms var(--ease-out-expo);
+  }
+  .js [data-reveal-img].is-visible {
+    clip-path: inset(0 0 0 0);
+  }
+  .js [data-reveal-img].is-visible img {
+    scale: 1;
+  }
+}
+
+/* ---- Page transitions (cross-document view transitions) ---------- */
+/* Same-origin navigations: the outgoing page dims and lifts away onto the
+   near-black stage, then the incoming page rises and unmasks. History,
+   deep links and back/forward stay fully native. Browsers without support
+   simply navigate normally. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+  ::view-transition {
+    background: #0b0b0f;
+  }
+  ::view-transition-old(root) {
+    animation: page-out var(--cue-page-out) cubic-bezier(0.4, 0, 1, 1) both;
+  }
+  ::view-transition-new(root) {
+    animation: page-in var(--cue-page-in) var(--ease-mask) calc(var(--cue-page-out) - 60ms) both;
+  }
+  /* The fixed header holds its place while the page changes beneath it. */
+  .site-header {
+    view-transition-name: site-header;
+  }
+  ::view-transition-group(site-header) {
+    animation-duration: 0s;
+  }
+  ::view-transition-old(site-header) {
+    display: none;
+  }
+  ::view-transition-new(site-header) {
+    animation: none;
+  }
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+    clip-path: inset(8% 0 0 0);
   }
 }
 

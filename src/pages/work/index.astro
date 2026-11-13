@@ -57,7 +57,7 @@ const schema = [
       {
         projects.map((project, i) => (
           <li data-categories={project.data.categories.join(' ')}>
-            <ProjectCard project={project} eager={i < 3} headingLevel="h2" />
+            <ProjectCard project={project} eager={i < 3} headingLevel="h2" index={i % 3} />
           </li>
         ))
       }
