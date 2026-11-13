@@ -62,6 +62,8 @@ const PHOTOS = {
   'C8F41B41-6077-47C0-8918-5F87B44EDC23_1_105_c.jpeg': 'nyit-led-panels.jpg',
   // Architectural lighting — red tree uplighting at an outdoor event
   'C22F4697-BC96-43F4-B3C5-82C8DEFC0739_1_105_c.jpeg': 'architectural-tree-uplighting.jpg',
+  // Lights on Marquette — Halloween show
+  'Neon Halloween Yard Spectacular.png': 'lights-on-marquette-halloween.jpg',
   // Nick at a production position
   'C81DC429-8502-48E6-B4DC-5B024911CCBB_1_105_c.jpeg': 'nick-manganiello-production.jpg',
 };
