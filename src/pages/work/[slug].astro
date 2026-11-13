@@ -206,7 +206,6 @@ const schema = [
                     type="button"
                     class="story-figure zoom-frame block w-full cursor-zoom-in rounded-[4px] border border-line bg-surface"
                     style={g.portrait ? `max-width:min(100%, calc(85vh * ${g.src.width} / ${g.src.height}))` : undefined}
-                    data-reveal-img
                     data-lightbox={i}
                     data-full={g.full.src}
                     data-alt={g.alt}
@@ -232,7 +231,7 @@ const schema = [
           (d.videoEmbed || d.media.length > 0) && (
             <div class="mt-6 grid gap-6 md:mt-8 md:gap-8" aria-label="Video and motion">
               {d.videoEmbed && (
-                <div class="aspect-video overflow-hidden rounded-[4px] border border-line bg-surface" data-reveal-img>
+                <div class="aspect-video overflow-hidden rounded-[4px] border border-line bg-surface">
                   <iframe
                     src={d.videoEmbed}
                     title={`${d.title} — video`}
@@ -257,7 +256,7 @@ const schema = [
                     aria-label={m.alt}
                   />
                 ) : (
-                  <figure class="overflow-hidden rounded-[4px] border border-line" data-reveal-img>
+                  <figure class="overflow-hidden rounded-[4px] border border-line">
                     <picture>
                       {still && <source media="(prefers-reduced-motion: reduce)" srcset={still.src} />}
                       <img src={m.src} alt={m.alt} width={m.width} height={m.height} loading="lazy" decoding="async" class="block w-full" />
@@ -289,7 +288,7 @@ const schema = [
             <ul class="mt-10 grid gap-x-8 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
               {related.map((p, i) => (
                 <li>
-                  <ProjectCard project={p} index={i} />
+                  <ProjectCard project={p} reveal={false} />
                 </li>
               ))}
             </ul>

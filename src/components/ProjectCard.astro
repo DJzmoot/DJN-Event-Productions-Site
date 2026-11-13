@@ -10,13 +10,15 @@ interface Props {
   headingLevel?: 'h2' | 'h3';
   /** Position in a row, used to stagger the image reveal. */
   index?: number;
+  /** Mask-reveal the photo when it scrolls into view. */
+  reveal?: boolean;
 }
-const { project, eager = false, headingLevel: H = 'h3', index = 0 } = Astro.props;
+const { project, eager = false, headingLevel: H = 'h3', index = 0, reveal = true } = Astro.props;
 const d = project.data;
 ---
 
 <a href={`/work/${project.id}/`} class="project-card group block" data-categories={d.categories.join(' ')}>
-  <div class="card-media zoom-frame relative aspect-[4/3] rounded-[4px] border border-line bg-surface" data-reveal-img style={`--i:${index}`}>
+  <div class="card-media zoom-frame relative aspect-[4/3] rounded-[4px] border border-line bg-surface" data-reveal-img={reveal ? true : undefined} style={`--i:${index}`}>
     {
       d.cover && !d.placeholder ? (
         <Image
