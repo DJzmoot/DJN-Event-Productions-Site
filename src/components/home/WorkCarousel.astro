@@ -73,6 +73,7 @@ const total = projects.length;
                       {d.services.length > 0 && (
                         <p class="label mt-3 text-[0.6563rem] text-ink/75 sm:text-[0.6875rem]">
                           {d.services.join('  /  ')}
+                          {d.productionPartner && <span class="mt-1.5 block text-ink/60">{`with ${d.productionPartner}`}</span>}
                         </p>
                       )}
                     </div>

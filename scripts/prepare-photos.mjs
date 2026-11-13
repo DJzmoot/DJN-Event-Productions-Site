@@ -57,6 +57,9 @@ const PHOTOS = {
   // NYIT Friends Gala — National Event Connection (October 2026)
   '547F8244-4375-4ECF-93F5-3414A538215E_1_105_c.jpeg': 'nyit-friends-gala.jpg',
   '26C02942-9D54-4128-8D7F-616CC86EE2C7_1_105_c.jpeg': 'led-wall-build.jpg',
+  'B95875A5-3095-4D55-8D81-9D118C73755E_1_105_c.jpeg': 'nyit-control-position.jpg',
+  '3304643A-B441-4A04-928C-25DACE3F4B59_1_105_c.jpeg': 'nyit-stage-audio.jpg',
+  'C8F41B41-6077-47C0-8918-5F87B44EDC23_1_105_c.jpeg': 'nyit-led-panels.jpg',
   // Architectural lighting — red tree uplighting at an outdoor event
   'C22F4697-BC96-43F4-B3C5-82C8DEFC0739_1_105_c.jpeg': 'architectural-tree-uplighting.jpg',
   // Nick at a production position
